@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+<title>
+    ZGGTT
+</title>
+<!--[if lt IE 9]><script src="//cdn.bootcss.com/html5shiv/r29/html5.js"></script><![endif]-->
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+<meta http-equiv="x-dns-prefetch-control" content="on">
+<link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+<meta name="author" content="ZZGGTT">
+<meta name="description" content="">
+<meta name="keywords" content="">
+<script async src="//instant.page/3.0.0" type="module" defer integrity="sha384-OeDn4XE77tdHo8pGtE1apMPmAipjoxUQ++eeJa6EtJCfHlvijigWiJpD7VDPWXV1"></script>
+<link rel="stylesheet" href="https://zzggtt.github.io/styles/main.css" />
+<link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+<script type="text/javascript" src="https://apps.bdimg.com/libs/jquery/1.7.1/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/itjoker233/Gridea-theme-Chic/assets/media/css/style.min.css" />
+    <script src="https://cdn.jsdelivr.net/gh/itjoker233/Gridea-theme-Chic/assets/media/script/tocbot.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/itjoker233/Gridea-theme-Chic/assets/media/script/script.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/itjoker233/Gridea-theme-Chic/assets/media/script/icon.min.js"></script>
+    
+            <script src="https://cdn.jsdelivr.net/gh/ITJoker233/ITJoker233.github.io@1.0.12/CDN/js/Card/prism.min.js"></script>
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/ITJoker233/ITJoker233.github.io@1.0.12/CDN/css/Card/prism.min.css" />
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.1/dist/katex.min.css">
+            <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.1/dist/katex.min.js"></script>
+            
+                        <!--CDN样式-->
+                        <script src="https://cdn.jsdelivr.net/gh/ITJoker233/ITJoker233.github.io@latest/CDN/js/hit-kounter-lc-0.3.0.js"></script>
+                        <script src="https://cdn1.lncld.net/static/js/av-min-1.5.0.js"></script>
+                        
+                            <script>
+                                (function() {
+                                    var bp = document.createElement('script');
+                                    var curProtocol = window.location.protocol.split(':')[0];
+                                    if (curProtocol === 'https') {
+                                        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+                                    } else {
+                                        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+                                    }
+                                    var s = document.getElementsByTagName("script")[0];
+                                    s.parentNode.insertBefore(bp, s);
+                                })();
+                            </script>
+                            
+</head>
+
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo">
+                <a href="https://zzggtt.github.io">
+                    ZGGTT
+                </a>
+            </div>
+
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/">
+                        首页
+                    </a>
+                    
+                    <a class="menu-item" href="/archives">
+                        归档
+                    </a>
+                    
+                    <a class="menu-item" href="/tags">
+                        标签
+                    </a>
+                    
+                    <a class="menu-item" href="/post/about">
+                        关于
+                    </a>
+                    
+                        <input id="switch_default" type="checkbox" class="switch_default">
+                        <label for="switch_default" class="toggleBtn"></label>
+            </div>
+            <form id="gridea-search-form" data-update="1674199567242" action="/search/index.html">
+                <input class="search-input" autocomplete="off" spellcheck="false" name="q" autofocus="true" placeholder="Search...">
+            </form>
+        </div>
+    </nav>
+
+    
+        <nav class="navbar-mobile" id="nav-mobile">
+            <div class="container">
+                <div class="navbar-header">
+                    <div>
+                        <a href="https://zzggtt.github.io">
+                            ZGGTT
+                        </a>
+                        <!--en-->
+                        <a id="mobile-toggle-theme-en" class="a en">&nbsp;Dark</a>
+                        <!--zh-->
+                        <a id="mobile-toggle-theme-zh" class="a zh">&nbsp;&#x6697;&#x9ED1;</a>
+                    </div>
+                    <form id="gridea-search-form" data-update="1674199567242" action="/search/index.html">
+                        <input class="search-input" autocomplete="off" spellcheck="false" name="q" autofocus="true" placeholder="Search...">
+                    </form>
+                    <!--en-->
+                    <div class="menu-toggle" id="menu-toggle-en" onclick="mobileBtn()">&#9776; Menu</div>
+                    <!--zh-->
+                    <div class="menu-toggle" id="menu-toggle-zh" onclick="mobileBtn()">&#9776; &#x83DC;&#x5355;</div>
+
+                </div>
+                <div class="menu" id="mobile-menu">
+                    
+                        <a class="menu-item" href="/">
+                            首页
+                        </a>
+                        
+                        <a class="menu-item" href="/archives">
+                            归档
+                        </a>
+                        
+                        <a class="menu-item" href="/tags">
+                            标签
+                        </a>
+                        
+                        <a class="menu-item" href="/post/about">
+                            关于
+                        </a>
+                        
+                </div>
+            </div>
+        </nav>
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementById("menu-toggle-en");
+        var toggleMenu_zh = document.getElementById("menu-toggle-zh");
+
+        var mobileMenu = document.getElementById("mobile-menu");
+        if (toggleMenu.display != "none") {
+            if (toggleMenu.classList.contains("active")) {
+                toggleMenu.classList.remove("active")
+                mobileMenu.classList.remove("active")
+            } else {
+                toggleMenu.classList.add("active")
+                mobileMenu.classList.add("active")
+            }
+        } else if (toggleMenu_zh.display != "none") {
+            if (toggleMenu_zh.classList.contains("active")) {
+                toggleMenu_zh.classList.remove("active")
+                mobileMenu.classList.remove("active")
+            } else {
+                toggleMenu_zh.classList.add("active")
+                mobileMenu.classList.add("active")
+            }
+        }
+
+    }
+</script>
+            <div class="main">
+                <div class="container">
+                    <article class="post-wrap">
+                        <header class="post-header">
+                            <h1 class="post-title">
+                                《Django4.0源码学习》- runserver命令
+                            </h1>
+                            
+                                <!--en-->
+                                <div class="post-meta en">
+                                    Author:
+                                    <a itemprop="author" rel="author" href="/">
+                                        ZGGTT
+                                    </a>
+                                    <span class="post-time">
+                                Date: <a href="#">2023-01-20</a>
+                            </span>
+                                    <span class="post-readtime">Reading Time:<a
+                                    href="#">3.2
+                                    mins</a></span>
+                                    <span class="post-words">words:<a href="#">805</a></span>
+                                    
+                                            Views:
+                                            <span data-hk-page="current"> - </span>
+                                            
+                                </div>
+                                
+                        </header>
+                        
+                        <div class="post-content">
+                            <h1 id="前置知识-wsgi">前置知识-WSGI</h1>
+<p>Web请求流程图：<br>
+<img src="https://cdn.nlark.com/yuque/0/2023/png/34439782/1674130136946-ffd879b3-8243-47ba-ad80-519a8931918f.png#averageHue=%23dbdbdb&amp;clientId=uea650011-75d3-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=396&amp;id=u78539615&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=792&amp;originWidth=2240&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=true&amp;size=104059&amp;status=done&amp;style=none&amp;taskId=uc16f7d19-10ae-4152-9e9d-68c881dea5c&amp;title=%E5%9F%BA%E4%BA%8EDjango%E7%9A%84Web%E8%AF%B7%E6%B1%82%E6%B5%81%E7%A8%8B%E5%9B%BE&amp;width=1120" alt="image.png" title="基于Django的Web请求流程图" loading="lazy"><br>
+首先我们需要思考一个问题，为什么 <code>Flask/Django</code> 编写的Web应用程序在 <code>uWSGI </code>或者 <code>gunicorn</code> 上都可以运行呢？<br>
+答案就是它们都遵循了一个标准的接口，即 <a href="https://peps.python.org/pep-3333/#abstract">WSGI-PEPE3333</a> ，基于WSGI协议，可以促进Web服务器和Web应用程序或框架之间的可移植性：</p>
+<blockquote>
+<p>This document specifies a proposed standard interface between web servers and Python web applications or frameworks, to promote web application portability across a variety of web servers.</p>
+</blockquote>
+<p>下面是基于WSGI实现的简单的例子：</p>
+<pre><code class="language-python">from wsgiref.simple_server import make_server
+
+HELLO_WORLD = b&quot;Hello world!\n&quot;
+
+&quot;&quot;&quot;
+application：应用程序或者框架，是一个可调用的对象
+接受两个参数：
+   -- environ: 包含WSGI环境信息的字典
+   -- start_response: 生成响应的WSGI回调函数,接受两个参数status和response_headers
+&quot;&quot;&quot;
+def application(environ, start_response):
+    status = '200 OK'
+    response_headers = [('Content-type', 'text/plain')]
+    start_response(status, response_headers)
+    return [HELLO_WORLD]
+
+
+if __name__ == &quot;__main__&quot;:
+    # 基于wsgiref.simple_server模块实现一个简单的Web Server
+    # 客户端的请求转发到application进行处理
+    httpd = make_server('127.0.0.1', 9999, application)
+    print(&quot;Serving HTTP on 127.0.0.1 port 9999...&quot;)
+    httpd.serve_forever()
+</code></pre>
+<h1 id="runserver命令">runserver命令</h1>
+<p>前面已经了解过Django命令的执行过程，接下来我们将从runserver命令调用的核心函数开始。runserver命令最终调用的是django/core/management/commands/runserver.py 中Command类的handler()方法。</p>
+<h2 id="命令执行流程">命令执行流程</h2>
+<p>runserver命令中Command对象调用handler()方法运行的流程如图：<br>
+<img src="https://cdn.nlark.com/yuque/0/2023/png/34439782/1674135456572-cd1a3405-05fb-4f54-b501-88b26526b445.png#averageHue=%23e3e3e3&amp;clientId=uea650011-75d3-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=ui&amp;id=u9186e69e&amp;margin=%5Bobject%20Object%5D&amp;name=iShot_2023-01-19_21.37.27.png&amp;originHeight=1240&amp;originWidth=2450&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=265524&amp;status=done&amp;style=none&amp;taskId=ue3468afc-39cc-47ff-aeaf-1ec1c3e7c76&amp;title=" alt="iShot_2023-01-19_21.37.27.png" loading="lazy"></p>
+<h2 id="inner_run">inner_run()</h2>
+<p>在inner_run()方法中，将会出现我们熟悉的控制台打印信息：<br>
+<img src="https://cdn.nlark.com/yuque/0/2023/png/34439782/1674135660500-4c205513-e313-4e09-8689-c9c8e617ffc5.png#averageHue=%23181717&amp;clientId=uea650011-75d3-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=ui&amp;id=u0adb557c&amp;margin=%5Bobject%20Object%5D&amp;name=iShot_2023-01-19_21.40.48.png&amp;originHeight=1608&amp;originWidth=2050&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=454696&amp;status=done&amp;style=none&amp;taskId=u34808f0f-4c90-4f6a-9165-b1f7e994636&amp;title=" alt="iShot_2023-01-19_21.40.48.png" loading="lazy"><br>
+关键的是获取handler的	get_handler()方法，以及调用django/core/server/basehttp.py中的run()方法：<br>
+<img src="https://cdn.nlark.com/yuque/0/2023/png/34439782/1674135777722-b518436b-63a0-46e1-aee9-c3a0939f5b7f.png#averageHue=%23141414&amp;clientId=uea650011-75d3-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=ui&amp;id=u5f45fc0b&amp;margin=%5Bobject%20Object%5D&amp;name=iShot_2023-01-19_21.42.51.png&amp;originHeight=748&amp;originWidth=1462&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=139026&amp;status=done&amp;style=none&amp;taskId=u4c41942c-b6c1-4976-a179-1ee921ea603&amp;title=" alt="iShot_2023-01-19_21.42.51.png" loading="lazy"></p>
+<h2 id="handler变量">handler变量</h2>
+<p>self.get_handler()方法会调用django/core/servers/basehttp.py中的get_internal_wsgi_application()方法：<br>
+<img src="https://cdn.nlark.com/yuque/0/2023/png/34439782/1674136116099-95b4c675-f27b-43f9-bdd8-934196db28df.png#averageHue=%231b1817&amp;clientId=uea650011-75d3-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=ui&amp;id=u5462acec&amp;margin=%5Bobject%20Object%5D&amp;name=iShot_2023-01-19_21.48.27.png&amp;originHeight=1222&amp;originWidth=1806&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=338654&amp;status=done&amp;style=none&amp;taskId=u3eb0b447-cd0e-4936-89c2-0d9adea70af&amp;title=" alt="iShot_2023-01-19_21.48.27.png" loading="lazy"><br>
+将会获取Django项目的配置文件中WSGI_APPLICATION参数的值：<br>
+<img src="https://cdn.nlark.com/yuque/0/2023/png/34439782/1674136371355-adbe2387-d111-4add-b370-19d1ad214279.png#averageHue=%23141414&amp;clientId=uea650011-75d3-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=ui&amp;id=u95975e88&amp;margin=%5Bobject%20Object%5D&amp;name=iShot_2023-01-19_21.52.42.png&amp;originHeight=140&amp;originWidth=976&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=33392&amp;status=done&amp;style=none&amp;taskId=u2bff5c58-75f3-4584-a255-745bef6d5bb&amp;title=" alt="iShot_2023-01-19_21.52.42.png" loading="lazy"><br>
+将返回上面对应路径的模块，application就是get_wsgi_application()方法的返回值：<br>
+<img src="https://cdn.nlark.com/yuque/0/2023/png/34439782/1674136479550-cd918008-0675-464d-a25b-93ab59203501.png#averageHue=%23181716&amp;clientId=uea650011-75d3-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=ui&amp;id=u7ff598bd&amp;margin=%5Bobject%20Object%5D&amp;name=iShot_2023-01-19_21.54.32.png&amp;originHeight=906&amp;originWidth=1776&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=180606&amp;status=done&amp;style=none&amp;taskId=uece24e3d-b6fb-4e54-89a8-3186befe4ee&amp;title=" alt="iShot_2023-01-19_21.54.32.png" loading="lazy"><br>
+当app_path为None时，也就是Django没有配置该参数，返回的结果也是一样的(对应代码43、44行)。<br>
+get_wsgi_application()方法源码如下，可以看出application变量是一个WSGIHandler对象：<br>
+<img src="https://cdn.nlark.com/yuque/0/2023/png/34439782/1674136647836-33153722-8811-4dd9-b360-94de9ea5ccaa.png#averageHue=%23171615&amp;clientId=uea650011-75d3-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=ui&amp;id=u4ddd35f6&amp;margin=%5Bobject%20Object%5D&amp;name=iShot_2023-01-19_21.57.20.png&amp;originHeight=746&amp;originWidth=1738&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=162052&amp;status=done&amp;style=none&amp;taskId=udba0d7b7-7145-4853-b7c5-97c9e935656&amp;title=" alt="iShot_2023-01-19_21.57.20.png" loading="lazy"><br>
+总结：从inner_run()方法中获取的handler变量是一个WSGIHandler对象。</p>
+<h2 id="run方法">run()方法</h2>
+<p>在前置知识-WSGI中，我们使用了Python的一个内置模块：wsgiref。该模块是基于WSGI协议开发的服务模块，我们通过make_server()方法获得了一个服务对象，并通过serve_forever()启动服务等待请求。<br>
+<img src="https://cdn.nlark.com/yuque/0/2023/png/34439782/1674137418053-aa802a0c-6821-4421-96e6-5cab20c44e92.png#averageHue=%23121110&amp;clientId=uea650011-75d3-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=ui&amp;id=ufb8810fe&amp;margin=%5Bobject%20Object%5D&amp;name=iShot_2023-01-19_22.10.09.png&amp;originHeight=222&amp;originWidth=1272&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=59049&amp;status=done&amp;style=none&amp;taskId=u32c0775e-dff3-4205-a6e7-a99e50951c4&amp;title=" alt="iShot_2023-01-19_22.10.09.png" loading="lazy"><br>
+其中，make_server()源码如下，主要功能有亮点：</p>
+<ol>
+<li>实例化WSGIServer对象，监听对应的host和port</li>
+<li>通过set_app()方法设置处理请求的函数</li>
+</ol>
+<figure data-type="image" tabindex="1"><img src="https://cdn.nlark.com/yuque/0/2023/png/34439782/1674137459937-d0077313-532c-4e19-b51d-641029a9babd.png#averageHue=%23141413&amp;clientId=uea650011-75d3-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=ui&amp;id=ud42289f3&amp;margin=%5Bobject%20Object%5D&amp;name=iShot_2023-01-19_22.10.54.png&amp;originHeight=408&amp;originWidth=1738&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=108107&amp;status=done&amp;style=none&amp;taskId=uf6fc9315-16b9-42f0-816c-109b4971a21&amp;title=" alt="iShot_2023-01-19_22.10.54.png" loading="lazy"></figure>
+<p>接下来我们再看下run()方法的源码，它与make_server()方法很类似：<br>
+<img src="https://cdn.nlark.com/yuque/0/2023/png/34439782/1674137585307-833c3e3e-da52-41fa-9465-bdf533401756.png#averageHue=%23141414&amp;clientId=uea650011-75d3-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=ui&amp;id=u24cb0073&amp;margin=%5Bobject%20Object%5D&amp;name=iShot_2023-01-19_22.12.58.png&amp;originHeight=744&amp;originWidth=2132&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=245388&amp;status=done&amp;style=none&amp;taskId=u49b4723d-d979-4109-8c7e-0e7a9f702c1&amp;title=" alt="iShot_2023-01-19_22.12.58.png" loading="lazy"><br>
+其中httpd_cls是django/core/servers/basehttp.py下的WSGIServer类，阅读其源码可以知道其继承自wsgiref模块下的WSGIServer，它拓展了初始化方法和处理错误请求的方法：<br>
+<img src="https://cdn.nlark.com/yuque/0/2023/png/34439782/1674137854393-5d81fcff-17e5-49da-a5e2-3aa416520c7b.png#averageHue=%23161515&amp;clientId=uea650011-75d3-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=ui&amp;id=ud6b8496b&amp;margin=%5Bobject%20Object%5D&amp;name=iShot_2023-01-19_22.17.28.png&amp;originHeight=904&amp;originWidth=1720&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=234376&amp;status=done&amp;style=none&amp;taskId=u76ee3fd4-4ef2-40d6-8201-1877ef7eb3f&amp;title=" alt="iShot_2023-01-19_22.17.28.png" loading="lazy"><br>
+wsgi_handler是前面传入的handler变量也就是WSGIHandler对象，而WSGIHandler对象实现了__call__魔术方法，对象可以像函数一样被调用，所以Django中所有请求处理的源头就是这里：<br>
+<img src="https://cdn.nlark.com/yuque/0/2023/png/34439782/1674138104472-bf7ac68c-2521-4197-b207-74d73433cf81.png#averageHue=%23171716&amp;clientId=uea650011-75d3-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=ui&amp;id=u2de6a46d&amp;margin=%5Bobject%20Object%5D&amp;name=iShot_2023-01-19_22.21.38.png&amp;originHeight=1510&amp;originWidth=1914&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=410873&amp;status=done&amp;style=none&amp;taskId=u491a4ea2-2aee-40f7-bff1-fc792313cb7&amp;title=" alt="iShot_2023-01-19_22.21.38.png" loading="lazy"></p>
+<h2 id="总结">总结</h2>
+<p>runserver命令本质上是对wsgiref模块的封装，Django对于整个请求的处理源头连再django/core/handlers/wsgi.py中WSGIHandler对象的__call__方法</p>
+
+                        </div>
+                        
+                                
+                                    
+                                        <!--en-->
+                                        <section class="post-copyright en">
+                                            <p class="copyright-item">
+                                                <span>Author:</span>
+                                                <span>ZGGTT</span>
+                                            </p>
+
+                                            <p class="copyright-item">
+                                                <span>Permalink:</span>
+                                                <span><a href="https://zzggtt.github.io/uNL5ZC6-I/">https://zzggtt.github.io/uNL5ZC6-I/</a></span>
+                                            </p>
+
+                                            <p class="copyright-item">
+                                                <span>License:</span>
+                                                <span>MIT License</span>
+                                            </p>
+                                        </section>
+                                        
+                                                
+                                                    
+                                                        <!-- Share-->
+                                                        <span style="margin-right:15px">
+                                                    <i class="post-share"></i>
+                                                    <span>Share:</span>
+                                                        <a title="QR Code" target="_blank" href="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://zzggtt.github.io/uNL5ZC6-I/"><i class="fa fa-qrcode"></i></a>
+                                                        <a title="QQ" target="_blank" href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://zzggtt.github.io/uNL5ZC6-I/&sharesource=qzone&title=《Django4.0源码学习》- runserver命令&pics=https://zzggtt.github.io/images/avatar.png?v=1674199567242&summary="><i class="fa fa-qq"></i></a>
+                                                        <a title="Weibo" target="_blank" href="https://service.weibo.com/share/share.php?url=https://zzggtt.github.io/uNL5ZC6-I/&sharesource=weibo&title=《Django4.0源码学习》- runserver命令 + " - " + &pic="https://zzggtt.github.io/images/avatar.png?v=1674199567242 "><i class="fa fa-weibo "></i></a>
+                                                        
+                                                                </span>
+                                                                <!--en-->
+                                                                <section class="post-tags en ">
+                                                                    <div>
+                                                                        <span>Tag(s):</span>
+                                                                        <span class="tag ">
+                        
+                                                            </span>
+                                                                    </div>
+                                                                    <div>
+                                                                        <a href="javascript:window.history.back();">back</a>
+                                                                        <span>&dot;</span>
+                                                                        <a href="#">home</a>
+                                                                    </div>
+                                                                </section>
+                                                                
+                                                                                <!---->
+                                                                                <section class="post-nav">
+                                                                                    
+                                                                                            
+                                                                                                <a class="next" rel="next" href="https://zzggtt.github.io/7agC-DLGm/">
+                                                                                                    《Django4.0源码学习》- startproject命令
+                                                                                                </a>
+                                                                                                
+                                                                                </section>
+                    </article>
+                </div>
+                
+                                            
+            </div>
+    </div>
+    </div>
+    </div>
+    
+        <footer id="footer" class="footer">
+            <div class="copyright">
+                
+                        Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+                            
+                                        <svg viewBox="0 0 1024 1024" style="margin-left: 5px;margin-right: 5px;" version="1.0" width="8" height="8" class="my-face">
+            <path
+                d="M863.597631 513.574282l-271.33965-140.213484L729.783667 81.926656c3.583731-7.87141 7.167462-15.742819 7.167462-25.214109C736.887134 25.226908 708.345275 0.012799 672.635953 0.012799a63.611229 63.611229 0 0 0-39.293053 12.607055c-1.791866 1.59988-3.519736 3.19976-5.311602 3.19976L147.87531 418.925381a55.547834 55.547834 0 0 0-19.646527 47.356448c1.791866 17.278704 14.27093 33.021523 32.125591 42.492813l271.33965 141.749369L292.504463 945.221908c-12.479064 25.214109-1.791866 53.563983 23.166262 69.306802 10.751194 6.335525 23.230258 9.47129 35.709322 9.47129 16.062795 0 32.125591-4.735645 44.604655-15.742819l480.091993-403.297753a55.547834 55.547834 0 0 0 19.646526-47.228458 61.243407 61.243407 0 0 0-32.12559-44.156688z"
+                fill="#93b5cf"></path>
+        </svg>
+                                        ZGGTT &copy;Copyright
+                                            <script>
+                                                var date = new Date();
+                                                document.write("" + date.getFullYear());
+                                            </script>
+                                            | Powered by
+                                            <a href="" target="_blank">
+                                                
+                                            </a>
+            </div>
+            <div id="update" style="display:none;">
+                on
+            </div>
+            
+                <div id="version" style="display:none;">
+                    1.7.5
+                </div>
+                
+                    <script>
+                        var pat = '';
+                        
+                        document.write('<div id="home_path" style="display:none;">' + document.location.protocol + '//' + window.document.location.hostname + pat + '</div>')
+                    </script>
+        </footer>
+        
+            <script src='https://cdn.jsdelivr.net/npm/live2d-widget@3.x/lib/L2Dwidget.min.js'></script>
+            
+                <script>
+                    
+                    
+                    loadlive2d();
+                    
+                    
+                    getStar();
+                    hljs.initHighlighting();
+                    console.clear();
+                    
+                    CheckVersion();
+                    
+                    var newDate = new Date();
+                    newDate.setTime(1674199567242);
+                    console.log(" Blog Update Time: " + newDate.toLocaleDateString());
+                    console.log("\n %c \u26a1Theme:Chic Author's Blog:https://blog.itjoker.cn  Write By ITJoker  \n\n", "color: #ffffff; background: rgba(49, 49, 49, 0.85); padding:5px 0;border-radius:5px;");
+                </script>
+                
+                    <div id="tp-weather-widget" style="background: #666;display: flex;"></div>
+                    <script>
+                        (function(T, h, i, n, k, P, a, g, e) {
+                            g = function() {
+                                P = h.createElement(i);
+                                a = h.getElementsByTagName(i)[0];
+                                P.src = k;
+                                P.charset = "utf-8";
+                                P.async = 1;
+                                a.parentNode.insertBefore(P, a)
+                            };
+                            T["ThinkPageWeatherWidgetObject"] = n;
+                            T[n] || (T[n] = function() {
+                                (T[n].q = T[n].q || []).push(arguments)
+                            });
+                            T[n].l = +new Date();
+                            if (T.attachEvent) {
+                                T.attachEvent("onload", g)
+                            } else {
+                                T.addEventListener("load", g, false)
+                            }
+                        }(window, document, "script", "tpwidget", "//widget.seniverse.com/widget/chameleon.js"))
+                    </script>
+                    <script>
+                        var wearther_margin = "10px 10px";
+                        
+                        tpwidget("init", {
+                            "flavor": "bubble",
+                            "location": "WX4FBXXFKE4F",
+                            "geolocation": "enabled",
+                            "position": "bottom-left",
+                            "margin": wearther_margin,
+                            "language": "zh-chs",
+                            "unit": "c",
+                            "theme": "chameleon",
+                            "uid": "UFC977E1C7",
+                            "hash": "213ad798bc472dc365da3a9d4a9ff115"
+                        });
+                        tpwidget("show");
+                    </script>
+                    
+        </div>
+</body>
+<script>
+    scroll();
+</script>
+
+</html>

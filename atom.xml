@@ -1,0 +1,416 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>https://zzggtt.github.io</id>
+    <title>ZGGTT</title>
+    <updated>2023-01-20T07:26:11.380Z</updated>
+    <generator>https://github.com/jpmonette/feed</generator>
+    <link rel="alternate" href="https://zzggtt.github.io"/>
+    <link rel="self" href="https://zzggtt.github.io/atom.xml"/>
+    <subtitle>温故而知新</subtitle>
+    <logo>https://zzggtt.github.io/images/avatar.png</logo>
+    <icon>https://zzggtt.github.io/favicon.ico</icon>
+    <rights>All rights reserved 2023, ZGGTT</rights>
+    <entry>
+        <title type="html"><![CDATA[《Django4.0源码学习》- runserver命令]]></title>
+        <id>https://zzggtt.github.io/uNL5ZC6-I/</id>
+        <link href="https://zzggtt.github.io/uNL5ZC6-I/">
+        </link>
+        <updated>2023-01-20T07:25:47.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="前置知识-wsgi">前置知识-WSGI</h1>
+<p>Web请求流程图：<br>
+<img src="https://cdn.nlark.com/yuque/0/2023/png/34439782/1674130136946-ffd879b3-8243-47ba-ad80-519a8931918f.png#averageHue=%23dbdbdb&amp;clientId=uea650011-75d3-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=396&amp;id=u78539615&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=792&amp;originWidth=2240&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=true&amp;size=104059&amp;status=done&amp;style=none&amp;taskId=uc16f7d19-10ae-4152-9e9d-68c881dea5c&amp;title=%E5%9F%BA%E4%BA%8EDjango%E7%9A%84Web%E8%AF%B7%E6%B1%82%E6%B5%81%E7%A8%8B%E5%9B%BE&amp;width=1120" alt="image.png" title="基于Django的Web请求流程图" loading="lazy"><br>
+首先我们需要思考一个问题，为什么 <code>Flask/Django</code> 编写的Web应用程序在 <code>uWSGI </code>或者 <code>gunicorn</code> 上都可以运行呢？<br>
+答案就是它们都遵循了一个标准的接口，即 <a href="https://peps.python.org/pep-3333/#abstract">WSGI-PEPE3333</a> ，基于WSGI协议，可以促进Web服务器和Web应用程序或框架之间的可移植性：</p>
+<blockquote>
+<p>This document specifies a proposed standard interface between web servers and Python web applications or frameworks, to promote web application portability across a variety of web servers.</p>
+</blockquote>
+<p>下面是基于WSGI实现的简单的例子：</p>
+<pre><code class="language-python">from wsgiref.simple_server import make_server
+
+HELLO_WORLD = b&quot;Hello world!\n&quot;
+
+&quot;&quot;&quot;
+application：应用程序或者框架，是一个可调用的对象
+接受两个参数：
+   -- environ: 包含WSGI环境信息的字典
+   -- start_response: 生成响应的WSGI回调函数,接受两个参数status和response_headers
+&quot;&quot;&quot;
+def application(environ, start_response):
+    status = '200 OK'
+    response_headers = [('Content-type', 'text/plain')]
+    start_response(status, response_headers)
+    return [HELLO_WORLD]
+
+
+if __name__ == &quot;__main__&quot;:
+    # 基于wsgiref.simple_server模块实现一个简单的Web Server
+    # 客户端的请求转发到application进行处理
+    httpd = make_server('127.0.0.1', 9999, application)
+    print(&quot;Serving HTTP on 127.0.0.1 port 9999...&quot;)
+    httpd.serve_forever()
+</code></pre>
+<h1 id="runserver命令">runserver命令</h1>
+<p>前面已经了解过Django命令的执行过程，接下来我们将从runserver命令调用的核心函数开始。runserver命令最终调用的是django/core/management/commands/runserver.py 中Command类的handler()方法。</p>
+<h2 id="命令执行流程">命令执行流程</h2>
+<p>runserver命令中Command对象调用handler()方法运行的流程如图：<br>
+<img src="https://cdn.nlark.com/yuque/0/2023/png/34439782/1674135456572-cd1a3405-05fb-4f54-b501-88b26526b445.png#averageHue=%23e3e3e3&amp;clientId=uea650011-75d3-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=ui&amp;id=u9186e69e&amp;margin=%5Bobject%20Object%5D&amp;name=iShot_2023-01-19_21.37.27.png&amp;originHeight=1240&amp;originWidth=2450&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=265524&amp;status=done&amp;style=none&amp;taskId=ue3468afc-39cc-47ff-aeaf-1ec1c3e7c76&amp;title=" alt="iShot_2023-01-19_21.37.27.png" loading="lazy"></p>
+<h2 id="inner_run">inner_run()</h2>
+<p>在inner_run()方法中，将会出现我们熟悉的控制台打印信息：<br>
+<img src="https://cdn.nlark.com/yuque/0/2023/png/34439782/1674135660500-4c205513-e313-4e09-8689-c9c8e617ffc5.png#averageHue=%23181717&amp;clientId=uea650011-75d3-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=ui&amp;id=u0adb557c&amp;margin=%5Bobject%20Object%5D&amp;name=iShot_2023-01-19_21.40.48.png&amp;originHeight=1608&amp;originWidth=2050&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=454696&amp;status=done&amp;style=none&amp;taskId=u34808f0f-4c90-4f6a-9165-b1f7e994636&amp;title=" alt="iShot_2023-01-19_21.40.48.png" loading="lazy"><br>
+关键的是获取handler的	get_handler()方法，以及调用django/core/server/basehttp.py中的run()方法：<br>
+<img src="https://cdn.nlark.com/yuque/0/2023/png/34439782/1674135777722-b518436b-63a0-46e1-aee9-c3a0939f5b7f.png#averageHue=%23141414&amp;clientId=uea650011-75d3-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=ui&amp;id=u5f45fc0b&amp;margin=%5Bobject%20Object%5D&amp;name=iShot_2023-01-19_21.42.51.png&amp;originHeight=748&amp;originWidth=1462&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=139026&amp;status=done&amp;style=none&amp;taskId=u4c41942c-b6c1-4976-a179-1ee921ea603&amp;title=" alt="iShot_2023-01-19_21.42.51.png" loading="lazy"></p>
+<h2 id="handler变量">handler变量</h2>
+<p>self.get_handler()方法会调用django/core/servers/basehttp.py中的get_internal_wsgi_application()方法：<br>
+<img src="https://cdn.nlark.com/yuque/0/2023/png/34439782/1674136116099-95b4c675-f27b-43f9-bdd8-934196db28df.png#averageHue=%231b1817&amp;clientId=uea650011-75d3-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=ui&amp;id=u5462acec&amp;margin=%5Bobject%20Object%5D&amp;name=iShot_2023-01-19_21.48.27.png&amp;originHeight=1222&amp;originWidth=1806&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=338654&amp;status=done&amp;style=none&amp;taskId=u3eb0b447-cd0e-4936-89c2-0d9adea70af&amp;title=" alt="iShot_2023-01-19_21.48.27.png" loading="lazy"><br>
+将会获取Django项目的配置文件中WSGI_APPLICATION参数的值：<br>
+<img src="https://cdn.nlark.com/yuque/0/2023/png/34439782/1674136371355-adbe2387-d111-4add-b370-19d1ad214279.png#averageHue=%23141414&amp;clientId=uea650011-75d3-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=ui&amp;id=u95975e88&amp;margin=%5Bobject%20Object%5D&amp;name=iShot_2023-01-19_21.52.42.png&amp;originHeight=140&amp;originWidth=976&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=33392&amp;status=done&amp;style=none&amp;taskId=u2bff5c58-75f3-4584-a255-745bef6d5bb&amp;title=" alt="iShot_2023-01-19_21.52.42.png" loading="lazy"><br>
+将返回上面对应路径的模块，application就是get_wsgi_application()方法的返回值：<br>
+<img src="https://cdn.nlark.com/yuque/0/2023/png/34439782/1674136479550-cd918008-0675-464d-a25b-93ab59203501.png#averageHue=%23181716&amp;clientId=uea650011-75d3-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=ui&amp;id=u7ff598bd&amp;margin=%5Bobject%20Object%5D&amp;name=iShot_2023-01-19_21.54.32.png&amp;originHeight=906&amp;originWidth=1776&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=180606&amp;status=done&amp;style=none&amp;taskId=uece24e3d-b6fb-4e54-89a8-3186befe4ee&amp;title=" alt="iShot_2023-01-19_21.54.32.png" loading="lazy"><br>
+当app_path为None时，也就是Django没有配置该参数，返回的结果也是一样的(对应代码43、44行)。<br>
+get_wsgi_application()方法源码如下，可以看出application变量是一个WSGIHandler对象：<br>
+<img src="https://cdn.nlark.com/yuque/0/2023/png/34439782/1674136647836-33153722-8811-4dd9-b360-94de9ea5ccaa.png#averageHue=%23171615&amp;clientId=uea650011-75d3-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=ui&amp;id=u4ddd35f6&amp;margin=%5Bobject%20Object%5D&amp;name=iShot_2023-01-19_21.57.20.png&amp;originHeight=746&amp;originWidth=1738&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=162052&amp;status=done&amp;style=none&amp;taskId=udba0d7b7-7145-4853-b7c5-97c9e935656&amp;title=" alt="iShot_2023-01-19_21.57.20.png" loading="lazy"><br>
+总结：从inner_run()方法中获取的handler变量是一个WSGIHandler对象。</p>
+<h2 id="run方法">run()方法</h2>
+<p>在前置知识-WSGI中，我们使用了Python的一个内置模块：wsgiref。该模块是基于WSGI协议开发的服务模块，我们通过make_server()方法获得了一个服务对象，并通过serve_forever()启动服务等待请求。<br>
+<img src="https://cdn.nlark.com/yuque/0/2023/png/34439782/1674137418053-aa802a0c-6821-4421-96e6-5cab20c44e92.png#averageHue=%23121110&amp;clientId=uea650011-75d3-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=ui&amp;id=ufb8810fe&amp;margin=%5Bobject%20Object%5D&amp;name=iShot_2023-01-19_22.10.09.png&amp;originHeight=222&amp;originWidth=1272&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=59049&amp;status=done&amp;style=none&amp;taskId=u32c0775e-dff3-4205-a6e7-a99e50951c4&amp;title=" alt="iShot_2023-01-19_22.10.09.png" loading="lazy"><br>
+其中，make_server()源码如下，主要功能有亮点：</p>
+<ol>
+<li>实例化WSGIServer对象，监听对应的host和port</li>
+<li>通过set_app()方法设置处理请求的函数</li>
+</ol>
+<figure data-type="image" tabindex="1"><img src="https://cdn.nlark.com/yuque/0/2023/png/34439782/1674137459937-d0077313-532c-4e19-b51d-641029a9babd.png#averageHue=%23141413&amp;clientId=uea650011-75d3-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=ui&amp;id=ud42289f3&amp;margin=%5Bobject%20Object%5D&amp;name=iShot_2023-01-19_22.10.54.png&amp;originHeight=408&amp;originWidth=1738&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=108107&amp;status=done&amp;style=none&amp;taskId=uf6fc9315-16b9-42f0-816c-109b4971a21&amp;title=" alt="iShot_2023-01-19_22.10.54.png" loading="lazy"></figure>
+<p>接下来我们再看下run()方法的源码，它与make_server()方法很类似：<br>
+<img src="https://cdn.nlark.com/yuque/0/2023/png/34439782/1674137585307-833c3e3e-da52-41fa-9465-bdf533401756.png#averageHue=%23141414&amp;clientId=uea650011-75d3-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=ui&amp;id=u24cb0073&amp;margin=%5Bobject%20Object%5D&amp;name=iShot_2023-01-19_22.12.58.png&amp;originHeight=744&amp;originWidth=2132&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=245388&amp;status=done&amp;style=none&amp;taskId=u49b4723d-d979-4109-8c7e-0e7a9f702c1&amp;title=" alt="iShot_2023-01-19_22.12.58.png" loading="lazy"><br>
+其中httpd_cls是django/core/servers/basehttp.py下的WSGIServer类，阅读其源码可以知道其继承自wsgiref模块下的WSGIServer，它拓展了初始化方法和处理错误请求的方法：<br>
+<img src="https://cdn.nlark.com/yuque/0/2023/png/34439782/1674137854393-5d81fcff-17e5-49da-a5e2-3aa416520c7b.png#averageHue=%23161515&amp;clientId=uea650011-75d3-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=ui&amp;id=ud6b8496b&amp;margin=%5Bobject%20Object%5D&amp;name=iShot_2023-01-19_22.17.28.png&amp;originHeight=904&amp;originWidth=1720&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=234376&amp;status=done&amp;style=none&amp;taskId=u76ee3fd4-4ef2-40d6-8201-1877ef7eb3f&amp;title=" alt="iShot_2023-01-19_22.17.28.png" loading="lazy"><br>
+wsgi_handler是前面传入的handler变量也就是WSGIHandler对象，而WSGIHandler对象实现了__call__魔术方法，对象可以像函数一样被调用，所以Django中所有请求处理的源头就是这里：<br>
+<img src="https://cdn.nlark.com/yuque/0/2023/png/34439782/1674138104472-bf7ac68c-2521-4197-b207-74d73433cf81.png#averageHue=%23171716&amp;clientId=uea650011-75d3-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=ui&amp;id=u2de6a46d&amp;margin=%5Bobject%20Object%5D&amp;name=iShot_2023-01-19_22.21.38.png&amp;originHeight=1510&amp;originWidth=1914&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=410873&amp;status=done&amp;style=none&amp;taskId=u491a4ea2-2aee-40f7-bff1-fc792313cb7&amp;title=" alt="iShot_2023-01-19_22.21.38.png" loading="lazy"></p>
+<h2 id="总结">总结</h2>
+<p>runserver命令本质上是对wsgiref模块的封装，Django对于整个请求的处理源头连再django/core/handlers/wsgi.py中WSGIHandler对象的__call__方法</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[《Django4.0源码学习》- startproject命令]]></title>
+        <id>https://zzggtt.github.io/7agC-DLGm/</id>
+        <link href="https://zzggtt.github.io/7agC-DLGm/">
+        </link>
+        <updated>2023-01-15T14:51:06.000Z</updated>
+        <content type="html"><![CDATA[<p>:::info<br>
+在命令执行过程的基础上，开始对 django-admin startproject 命令背后执行原理进行追踪学习。<br>
+:::</p>
+<p>经过前面学习后，我们知道命令执行最终会调用对应模块下Command类的 handler() 方法，stratproject的源码如下：<br>
+<img src="https://cdn.nlark.com/yuque/0/2023/png/34439782/1673497222268-94df4dd2-11bb-42b6-9cf1-53cf8346d8e9.png#averageHue=%23181717&amp;clientId=uef7e59f6-120d-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=590&amp;id=ubd27b0e5&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=590&amp;originWidth=948&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=215144&amp;status=done&amp;style=none&amp;taskId=ud7f0980b-633e-46d0-b2e9-c5e9255d487&amp;title=&amp;width=948" alt="image.png" loading="lazy"><br>
+可以看出startproject命令的handler()方法并没有做太多的处理，核心还是调用了父类 TemplateCommand的handler()方法，该方法的几个主要处理如下：<br>
+（1）通过validate_name() 校验项目名是否合法：<br>
+<img src="https://cdn.nlark.com/yuque/0/2023/png/34439782/1673498756533-4658fbee-95ce-4b33-a9c3-e47ab6666afd.png#averageHue=%23141413&amp;clientId=uef7e59f6-120d-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=270&amp;id=ub054d2ec&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=270&amp;originWidth=647&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=87041&amp;status=done&amp;style=none&amp;taskId=ue7ad8c4d-400d-4d6e-b1ce-55bf4bbdbe2&amp;title=&amp;width=647" alt="image.png" loading="lazy"><br>
+（2）根据target参数来判断是否创建项目；target如果为None --&gt; 则以运行Python文件时的工作目录下创建项目：<br>
+<img src="https://cdn.nlark.com/yuque/0/2023/png/34439782/1673498809490-6d8dbd3d-5230-46b2-b878-45dfbb74733d.png#averageHue=%23171615&amp;clientId=uef7e59f6-120d-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=451&amp;id=u79292ef7&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=451&amp;originWidth=674&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=160751&amp;status=done&amp;style=none&amp;taskId=u719a38e8-2b1a-4108-9b6f-f655157414f&amp;title=&amp;width=674" alt="image.png" loading="lazy"><br>
+（3）通过Django内置template下的Context类，实例化context变量，用于后续模版渲染：<br>
+<img src="https://cdn.nlark.com/yuque/0/2023/png/34439782/1673499028719-40299cd8-ee6d-4d15-b97f-33ef406c02b2.png#averageHue=%23141313&amp;clientId=uef7e59f6-120d-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=333&amp;id=u776a485c&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=333&amp;originWidth=483&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=69338&amp;status=done&amp;style=none&amp;taskId=u2f796378-de11-488b-ae40-b5b45b9a8a3&amp;title=&amp;width=483" alt="image.png" loading="lazy"><br>
+（4）通过self.handle_template()函数，得到用于生成Django项目的模版文件所在的目录：<br>
+<img src="https://cdn.nlark.com/yuque/0/2023/png/34439782/1673499191609-62865cb5-3340-475c-b070-82491cbd0db5.png#averageHue=%23574937&amp;clientId=uef7e59f6-120d-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=283&amp;id=u9d6c99e9&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=283&amp;originWidth=760&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=82958&amp;status=done&amp;style=none&amp;taskId=u535c019d-42c7-47cb-9877-16f94995a62&amp;title=&amp;width=760" alt="image.png" loading="lazy"><br>
+可以打印看下Django内置的模版路径，以及其内容：<br>
+<img src="https://cdn.nlark.com/yuque/0/2023/png/34439782/1673499332374-a1743ac4-2241-41a8-b5a5-4726516ff0f6.png#averageHue=%23181818&amp;clientId=uef7e59f6-120d-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=103&amp;id=u7210e46a&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=103&amp;originWidth=854&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=35607&amp;status=done&amp;style=none&amp;taskId=ub03d4803-f3ca-4323-a69e-1fb94178fd5&amp;title=&amp;width=854" alt="image.png" loading="lazy"><br>
+<img src="https://cdn.nlark.com/yuque/0/2023/png/34439782/1673499496163-cafb6698-de60-475a-a3a8-e0dedde6d2fc.png#averageHue=%23181717&amp;clientId=uef7e59f6-120d-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=238&amp;id=udba99291&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=238&amp;originWidth=896&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=60720&amp;status=done&amp;style=none&amp;taskId=u671dfdc2-0eea-46ab-8d36-53624d19f9b&amp;title=&amp;width=896" alt="image.png" loading="lazy"><br>
+可以看到模版目录结构就是生成项目的目录结果<br>
+（5）后续的处理逻辑就是遍历模版目录下的文件，进行渲染并写入最终的位置，关键代码如图：<br>
+<img src="https://cdn.nlark.com/yuque/0/2023/png/34439782/1673499685397-58b66a37-7d0e-491d-b4d6-b3510dae94ba.png#averageHue=%23151514&amp;clientId=uef7e59f6-120d-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=261&amp;id=u0561eb26&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=261&amp;originWidth=849&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=125317&amp;status=done&amp;style=none&amp;taskId=u24a1e226-6b7c-490d-a68d-68fff5f2eae&amp;title=&amp;width=849" alt="image.png" loading="lazy"><br>
+先读取模版文件的内容，再通过调用Django内置的模版引擎进行加载内容，然后通过render()方法，把第三步生成的需要渲染的参数进行替换，最终生成项目文件。<br>
+我们可以通过简单的代码观察下这段逻辑，其实就是Django模版渲染的执行步骤：<br>
+<img src="https://cdn.nlark.com/yuque/0/2023/png/34439782/1673500047725-8c148eb7-28f3-4abc-86eb-e7455644d3ba.png#averageHue=%231f1f1f&amp;clientId=uef7e59f6-120d-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=151&amp;id=u0335861f&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=151&amp;originWidth=577&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=48796&amp;status=done&amp;style=none&amp;taskId=u6bb3e827-cb8e-4579-b79a-ac3bc626623&amp;title=&amp;width=577" alt="image.png" loading="lazy"></p>
+<p>至此，startproject命令的执行过程就完毕了。</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[《Django4.0源码学习》- 命令执行过程]]></title>
+        <id>https://zzggtt.github.io/39J-dBcvp/</id>
+        <link href="https://zzggtt.github.io/39J-dBcvp/">
+        </link>
+        <updated>2023-01-14T14:48:53.000Z</updated>
+        <content type="html"><![CDATA[<p>首先我们需要理清Django命令执行的整个过程，然后才方便对每个命令背后的原理进行深入研究。<br>
+<img src="https://cdn.nlark.com/yuque/0/2023/png/34439782/1673432347469-62126357-fd06-4071-9518-9a4a67c588e3.png#averageHue=%23dcd5ce&amp;clientId=u8c5f9812-8b88-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=415&amp;id=u14d98d9d&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=553&amp;originWidth=759&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=83461&amp;status=done&amp;style=none&amp;taskId=u644eb118-a5da-4b23-b279-3a1ac8103ee&amp;title=&amp;width=569" alt="image.png" loading="lazy"><br>
+Django中命令一般来自<code>django-admin</code>和<code>manage.py</code>：<br>
+<img src="https://cdn.nlark.com/yuque/0/2023/png/34439782/1673426736067-3ce1abfd-fc29-4a3b-a7df-5668590402e3.png#averageHue=%23151514&amp;clientId=u8c5f9812-8b88-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=200&amp;id=ubd4c6e59&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=267&amp;originWidth=789&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=true&amp;size=91987&amp;status=done&amp;style=none&amp;taskId=u1d479a2a-aa3c-485e-aab7-cb6ce97c8f2&amp;title=django-admin%E6%BA%90%E7%A0%81&amp;width=592" alt="image.png" title="django-admin源码" loading="lazy"><br>
+<img src="https://cdn.nlark.com/yuque/0/2023/png/34439782/1673426781430-65292cc8-1073-4ff7-8796-2b4f356cc2ac.png#averageHue=%23191716&amp;clientId=u8c5f9812-8b88-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=369&amp;id=u3053e30c&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=492&amp;originWidth=858&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=true&amp;size=164840&amp;status=done&amp;style=none&amp;taskId=u1728f974-380b-478d-86da-3a4408d33f5&amp;title=manage.py%E6%BA%90%E7%A0%81&amp;width=644" alt="image.png" title="manage.py源码" loading="lazy"><br>
+我们可以看到它们最终都调用了 <code>django.core.management</code> 下的 <code>execute_from_command_line</code>函数。该函数实例化了 <code>ManagementUtility</code> 类，并调用 <code>execute()</code>函数：<br>
+<img src="https://cdn.nlark.com/yuque/0/2023/png/34439782/1673431468476-92cda787-0d38-4f65-8ec6-b57d2f2cab40.png#averageHue=%23141312&amp;clientId=u8c5f9812-8b88-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=138&amp;id=u013de26b&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=138&amp;originWidth=773&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=59839&amp;status=done&amp;style=none&amp;taskId=uc888fbc9-b75b-42c0-8ae9-89fcf47ac5e&amp;title=&amp;width=773" alt="image.png" loading="lazy"><br>
+上诉过程的的完整流程如图：<br>
+<img src="https://cdn.nlark.com/yuque/0/2023/png/34439782/1673432022039-44015de3-bf8e-412a-9062-8dc2e80a9055.png#averageHue=%2380807f&amp;clientId=u8c5f9812-8b88-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=654&amp;id=u1b37caa8&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=654&amp;originWidth=1318&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=320520&amp;status=done&amp;style=none&amp;taskId=u7d2a707c-e492-4172-b2fb-6dada063808&amp;title=&amp;width=1318" alt="image.png" loading="lazy"></p>
+<h2 id="输入">输入</h2>
+<p>首先在<code>ManagementUtility</code> 类的 <code>__init__</code>方法中把命令行输入的命令保存在 <code>self.argv</code> 属性中：<br>
+<img src="https://cdn.nlark.com/yuque/0/2023/png/34439782/1673432659074-3bb0c376-f388-4c01-ab89-ba55e96afcee.png#averageHue=%23151514&amp;clientId=u8c5f9812-8b88-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=378&amp;id=u4eedeb18&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=378&amp;originWidth=1009&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=133312&amp;status=done&amp;style=none&amp;taskId=u288f04d9-d2a3-4caf-8292-101af8eb37c&amp;title=&amp;width=1009" alt="image.png" loading="lazy"><br>
+在manage.py中是有传入argv参数的，在django-admin中是没有传入的，通过sys.argv[:]来获取，我们可以通过一个简单的demo来了解下<code>sys.argv[:]</code>:</p>
+<pre><code class="language-python">import sys
+
+print(sys.argv[:])
+-----------------------------------------------------
+➜ python django-admin.py startproject first_project
+['django-admin.py', 'startproject', 'first_project']
+</code></pre>
+<p>然后在execute()方法中，把子命令保存在 <code>subcommand</code> 变量中：<br>
+<img src="https://cdn.nlark.com/yuque/0/2023/png/34439782/1673433025455-8fa153ae-5a4c-4993-84a6-5fc96b6cc734.png#averageHue=%23161514&amp;clientId=u8c5f9812-8b88-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=366&amp;id=u6d824feb&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=366&amp;originWidth=819&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=111435&amp;status=done&amp;style=none&amp;taskId=u669d965e-f34f-4803-a191-930aee0cea1&amp;title=&amp;width=819" alt="image.png" loading="lazy"></p>
+<h2 id="解析">解析</h2>
+<p>execute()方法中间是对参数选项的一些处理，可以先跳过，来到对下面对子命令的解析处理过程：<br>
+<img src="https://cdn.nlark.com/yuque/0/2023/png/34439782/1673433160133-e3fe7b23-d0e6-4995-8647-f91cfa5e9eb3.png#averageHue=%23171614&amp;clientId=u8c5f9812-8b88-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=267&amp;id=u86b0de1e&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=267&amp;originWidth=781&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=110987&amp;status=done&amp;style=none&amp;taskId=uba7e880c-4c06-4cb8-8135-0f52e1b65f2&amp;title=&amp;width=781" alt="image.png" loading="lazy"><br>
+这里涉及了对 <code>help</code>和 <code>version</code>命令的处理过程，这里比较简单可以跳过。我们需要关注的是最后一行：<code>self.fetch_command(subcommand).run_from_argv(self.argv)</code>。</p>
+<p><code>self.fetch_command(subcommand)</code>命令执行大概流程如图：<br>
+<img src="https://cdn.nlark.com/yuque/0/2023/png/34439782/1673453074370-384718ea-92cb-440d-b08b-96cdcef3998c.png#averageHue=%23a4a3a3&amp;clientId=u8c5f9812-8b88-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=629&amp;id=u1a6e095d&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=629&amp;originWidth=1661&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=324904&amp;status=done&amp;style=none&amp;taskId=u645e4544-e7c9-4e82-9f5a-e804b65bce2&amp;title=&amp;width=1661" alt="image.png" loading="lazy"><br>
+<code>fetch_command</code>方法：<br>
+<img src="https://cdn.nlark.com/yuque/0/2023/png/34439782/1673453239236-b5c22361-49b3-426f-9521-ab4f6fa52a64.png#averageHue=%23181716&amp;clientId=u8c5f9812-8b88-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=505&amp;id=ue8338daa&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=505&amp;originWidth=748&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=168103&amp;status=done&amp;style=none&amp;taskId=u5d2a22a1-f9ac-439d-b19c-153ae23124a&amp;title=&amp;width=748" alt="image.png" loading="lazy"><br>
+首先通过调用<code>get_commands()</code>方法，返回包含目录下的命令名和'django.core'的映射：<br>
+<img src="https://cdn.nlark.com/yuque/0/2023/png/34439782/1673453345175-73ddd728-b9aa-4c0b-bfa3-93e5e1002567.png#averageHue=%23161615&amp;clientId=u8c5f9812-8b88-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=330&amp;id=ufba09eea&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=330&amp;originWidth=840&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=128745&amp;status=done&amp;style=none&amp;taskId=u5012c088-64b7-4258-9b4b-9a446e2dbca&amp;title=&amp;width=840" alt="image.png" loading="lazy"><br>
+<img src="https://cdn.nlark.com/yuque/0/2023/png/34439782/1673453607940-b0261986-8a8c-4dd1-ade7-76ca34e4613f.png#averageHue=%23242424&amp;clientId=u8c5f9812-8b88-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=168&amp;id=uf584e73d&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=168&amp;originWidth=1253&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=123238&amp;status=done&amp;style=none&amp;taskId=uc39c1707-a94c-4688-a017-d71b8420dae&amp;title=&amp;width=1253" alt="image.png" loading="lazy"><br>
+又调用了<code>find_commands()</code>方法，返回command_dir下所有模块命令名组成的列表：<br>
+<img src="https://cdn.nlark.com/yuque/0/2023/png/34439782/1673453513065-c08886ef-03d5-4079-a145-7954a6815513.png#averageHue=%23191818&amp;clientId=u8c5f9812-8b88-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=805&amp;id=u141825f6&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=805&amp;originWidth=1227&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=342005&amp;status=done&amp;style=none&amp;taskId=uae273bb4-2cb6-4bac-a113-6cd4cff5bba&amp;title=&amp;width=1227" alt="image.png" loading="lazy"><br>
+<img src="https://cdn.nlark.com/yuque/0/2023/png/34439782/1673453591318-94a9f159-1642-42dd-87de-b9655c26fbaa.png#averageHue=%231e1e1e&amp;clientId=u8c5f9812-8b88-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=121&amp;id=u593ed158&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=121&amp;originWidth=1253&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=71426&amp;status=done&amp;style=none&amp;taskId=ue18936d0-54b7-41ea-a26f-571751fa62a&amp;title=&amp;width=1253" alt="image.png" loading="lazy"></p>
+<p>接下来就是load_command_class()方法，它返回对应命令模块下的Command()类：<br>
+<img src="https://cdn.nlark.com/yuque/0/2023/png/34439782/1673453790689-6e06c816-0aa0-445d-96cc-89c4b43941be.png#averageHue=%231a1919&amp;clientId=u8c5f9812-8b88-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=805&amp;id=u27eb76b5&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=805&amp;originWidth=1129&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=335437&amp;status=done&amp;style=none&amp;taskId=uaa486fe0-4504-42f9-a9fe-553a5151fba&amp;title=&amp;width=1129" alt="image.png" loading="lazy"><br>
+经过上诉流程我们知道了<code>fetch_command</code>方法最终返回了对应命令模块下的Command()类</p>
+<p>再调用Command()类下的run_from_argv()方法，如果命令模块下没有对应方法，则在其继承的父类BaseCommnad中：<br>
+<img src="https://cdn.nlark.com/yuque/0/2023/png/34439782/1673453851801-f30c38a4-e1f6-430b-a4c3-8b5e0da57ce8.png#averageHue=%23191818&amp;clientId=u8c5f9812-8b88-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=753&amp;id=fvavu&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=753&amp;originWidth=1208&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=296752&amp;status=done&amp;style=none&amp;taskId=ud9c2fab6-d504-437d-bb91-a68cebb4702&amp;title=&amp;width=1208" alt="image.png" loading="lazy"><br>
+run_from_argv()方法的核心是去调用self.execute()方法：<br>
+<img src="https://cdn.nlark.com/yuque/0/2023/png/34439782/1673454094940-795eb10f-1919-4e86-9e0f-f57acec846fe.png#averageHue=%231a1917&amp;clientId=u8c5f9812-8b88-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=571&amp;id=u4eb019e0&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=571&amp;originWidth=855&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=224579&amp;status=done&amp;style=none&amp;taskId=uabc8e978-c6d4-42fe-9cac-d7243027426&amp;title=&amp;width=855" alt="image.png" loading="lazy"><br>
+execute()方法的核心是调用self.handler()方法：<br>
+<img src="https://cdn.nlark.com/yuque/0/2023/png/34439782/1673454172486-5fc3276b-0abe-4b69-8d35-113299d97c2d.png#averageHue=%2368533e&amp;clientId=u8c5f9812-8b88-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=670&amp;id=uc172d85f&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=670&amp;originWidth=836&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=245785&amp;status=done&amp;style=none&amp;taskId=u4f11e87b-9eec-4715-90c0-f39e1f6db69&amp;title=&amp;width=836" alt="image.png" loading="lazy"></p>
+<h2 id="输出">输出</h2>
+<p>最终命令执行的输出就是对应命令下的handler()方法执行的结果：<br>
+<img src="https://cdn.nlark.com/yuque/0/2023/png/34439782/1673454236359-d41ccd79-c78d-40d0-a2fd-bec1b6002b58.png#averageHue=%23181716&amp;clientId=u8c5f9812-8b88-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=851&amp;id=u1ce18e18&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=851&amp;originWidth=923&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=263544&amp;status=done&amp;style=none&amp;taskId=uecb1afb9-33c8-4d8d-a2ad-19cf945d9d0&amp;title=&amp;width=923" alt="image.png" loading="lazy"></p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[从简单的两行代码学起]]></title>
+        <id>https://zzggtt.github.io/cong-jian-dan-de-liang-xing-dai-ma-xue-qi/</id>
+        <link href="https://zzggtt.github.io/cong-jian-dan-de-liang-xing-dai-ma-xue-qi/">
+        </link>
+        <updated>2023-01-10T10:08:19.000Z</updated>
+        <content type="html"><![CDATA[<p>首先我们从下面一段简单的代码出发，里面涉及到了多个知识点：</p>
+<pre><code class="language-python">data1 = 3.14
+data2 = data1
+</code></pre>
+<p><a name="cLoEB"></a></p>
+<h2 id="赋值语句的执行顺序是什么">赋值语句的执行顺序是什么？</h2>
+<pre><code class="language-python">class Gizmo:
+    def __init__(self) -&gt; None:
+        print('Gizmo id: {}'.format(id(self)))  # 实例化对象时,打印对象的标识(内存地址)
+
+
+x = Gizmo() # Gizmo id: 140650247909160
+# 先打印：Gizmo id: 140650248064696
+# 然后抛出异常:TypeError: unsupported operand type(s) for *: 'Gizmo' and 'int'
+y = Gizmo() * 10
+
+</code></pre>
+<p>从上面的例子中我们可以看出，为了理解Python中赋值语句，应该始终先读右边。<strong>对象在右边先创建或获取，在此之后左边的变量才会绑定到对象上</strong>。</p>
+<hr>
+<p><a name="mqpxg"></a></p>
+<h2 id="对象底层实现原理">对象底层实现原理</h2>
+<p><a name="Bj5QW"></a></p>
+<h3 id="pyobject">PyObject</h3>
+<p>先来看看Python3.7的源码，可以参考下面链接：<a href="https://github.com/python/cpython/blob/949fe976d5c62ae63ed505ecf729f815d0baccfc/Include/object.h">https://github.com/python/cpython/blob/949fe976d5c62ae63ed505ecf729f815d0baccfc/Include/object.h</a><br /><img src="https://cdn.nlark.com/yuque/0/2023/png/34439782/1673320626426-cccc2553-c87f-4c03-9564-3acfe935e3b1.png#averageHue=%23d5d5d5&amp;clientId=u84736c05-44fb-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=400&amp;id=u710881b4&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=400&amp;originWidth=636&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=112772&amp;status=done&amp;style=none&amp;taskId=u51f842c3-53b1-4e02-9efd-8ac1700311e&amp;title=&amp;width=636" alt="image.png" loading="lazy"><br />可以看到<strong>PyObjcet和PyVarObject</strong>中有四部分内容：</p>
+<ul>
+<li>**_PyObject_HEAD_EXTRA：**宏定义，包含上一个、下一个对象指针，用于构造双向循环链表</li>
+</ul>
+<figure data-type="image" tabindex="1"><img src="https://cdn.nlark.com/yuque/0/2023/png/34439782/1673320870243-cc6eb702-3bb0-4681-a49e-e462487798a9.png#averageHue=%239e9e9e&amp;clientId=u84736c05-44fb-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=119&amp;id=u8e6286d9&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=119&amp;originWidth=686&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=35911&amp;status=done&amp;style=none&amp;taskId=ua13563de-4008-45ca-9e54-a031e2735be&amp;title=&amp;width=686" alt="image.png" loading="lazy"></figure>
+<ul>
+<li>**Py_ssize_t ob_refcnt：**对象引用计数器，用于垃圾回收</li>
+<li>**_typeobject *ob_type：**对象类型</li>
+<li><strong>ob_size</strong>：容器中对象个数</li>
+</ul>
+<p><a name="iqhoV"></a></p>
+<h3 id="pyfloatobject">PyFloatObject</h3>
+<p>再看下Python内置的数据类型<code>float</code>的底层实现原理，可参考下面链接：<a href="https://github.com/python/cpython/blob/949fe976d5c62ae63ed505ecf729f815d0baccfc/Include/floatobject.h">https://github.com/python/cpython/blob/949fe976d5c62ae63ed505ecf729f815d0baccfc/Include/floatobject.h</a><br /><img src="https://cdn.nlark.com/yuque/0/2023/png/34439782/1673321611974-093c3dc8-5b38-4e7c-b06b-60dcd60e82dc.png#averageHue=%23d4d4d4&amp;clientId=u84736c05-44fb-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=356&amp;id=u266d8c62&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=356&amp;originWidth=605&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=64031&amp;status=done&amp;style=none&amp;taskId=u0e87a0b9-8283-4e4f-b755-ab2a24027a0&amp;title=&amp;width=605" alt="image.png" loading="lazy"></p>
+<ul>
+<li>**PyObject_HEAD：**是在<a href="https://github.com/python/cpython/blob/949fe976d5c62ae63ed505ecf729f815d0baccfc/Include/object.h">object.h</a>中的宏定义，本质是PyObject</li>
+</ul>
+<figure data-type="image" tabindex="2"><img src="https://cdn.nlark.com/yuque/0/2023/png/34439782/1673321728008-7234ea63-f2bb-4fcc-95c1-78262a89a206.png#averageHue=%236b6861&amp;clientId=u84736c05-44fb-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=76&amp;id=u6d3aeed1&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=76&amp;originWidth=586&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=26823&amp;status=done&amp;style=none&amp;taskId=u55a43933-84e2-403e-a3f2-a5c6bdbabe8&amp;title=&amp;width=586" alt="image.png" loading="lazy"></figure>
+<ul>
+<li>**ob_fval：**用于保存float类型对象的值</li>
+</ul>
+<p><a name="b5V68"></a></p>
+<h3 id="pylistobject">PyListObject</h3>
+<p>再看下Python内置的数据类<code>list</code>的底层实现原理，可参考下面链接：<br /><a href="https://github.com/python/cpython/blob/949fe976d5c62ae63ed505ecf729f815d0baccfc/Include/listobject.h">https://github.com/python/cpython/blob/949fe976d5c62ae63ed505ecf729f815d0baccfc/Include/listobject.h</a><br /><img src="https://cdn.nlark.com/yuque/0/2023/png/34439782/1673322005904-ab653837-38f3-4b06-95ff-eea1450f684a.png#averageHue=%23d6d6d6&amp;clientId=u84736c05-44fb-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=397&amp;id=ue76782bf&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=397&amp;originWidth=660&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=106641&amp;status=done&amp;style=none&amp;taskId=u78db343b-799f-45ff-a08c-ab98d120de9&amp;title=&amp;width=660" alt="image.png" loading="lazy"></p>
+<ul>
+<li>**PyObject_VAR_HEAD：**是在<a href="https://github.com/python/cpython/blob/949fe976d5c62ae63ed505ecf729f815d0baccfc/Include/object.h">object.h</a>中的宏定义，本质是PyVarObject</li>
+</ul>
+<figure data-type="image" tabindex="3"><img src="https://cdn.nlark.com/yuque/0/2023/png/34439782/1673322109102-897fac5a-0189-4cce-94f0-ddcc6de31f5f.png#averageHue=%23b4b4b4&amp;clientId=u84736c05-44fb-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=181&amp;id=u50585fba&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=181&amp;originWidth=630&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=63332&amp;status=done&amp;style=none&amp;taskId=u132e987c-3874-4e6e-9a34-68c30104ef7&amp;title=&amp;width=630" alt="image.png" loading="lazy"></figure>
+<ul>
+<li>**PyObject **ob_item：**指针列表，里面的每一个指针都指向列表对象的标识（内存地址）</li>
+<li>**Py_ssize_t allocated：**存储了列表已分配的内存空间大小<br>
+<a name="FZoIU"></a></li>
+</ul>
+<h3 id="总结">总结</h3>
+<p>每个Python对象都有标识（内存地址）、类型、值、双向循环链表上下指针、引用计数器（后两个用于Python内部实现垃圾回收）。</p>
+<hr>
+<p><a name="dSG7C"></a></p>
+<h2 id="变量是什么">变量是什么？</h2>
+<p>人们经常使用“变量是盒子”这样的比喻，但是这有碍于理解面向对象语言中的引用式变量。Python变量类似于Java中的引用变量，因此最好把它们理解为附加在对象上的<strong>标注（类似于便利贴）</strong>。<br />例如下面的例子，就无法使用“变量是盒子”做解释：</p>
+<pre><code class="language-python">a = [1, 2, 3]
+b = a
+a.append(4)
+print(b)  // [1, 2, 3, 4]
+</code></pre>
+<figure data-type="image" tabindex="4"><img src="https://cdn.nlark.com/yuque/0/2023/png/34439782/1673318321576-811cd4bd-2307-41c5-82d2-1497634c3dac.png#averageHue=%23c7c6c4&amp;clientId=u84736c05-44fb-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=267&amp;id=OUYHe&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=267&amp;originWidth=523&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=true&amp;size=37499&amp;status=done&amp;style=none&amp;taskId=ud251b923-80b7-48c4-b4bf-86038804caf&amp;title=%E5%BA%94%E8%AF%A5%E6%8A%8A%E5%8F%98%E9%87%8F%E8%A7%86%E4%BD%9C%E4%BE%BF%E5%88%A9%E8%B4%B4%EF%BC%8C&amp;width=523" alt="image.png" title="应该把变量视作便利贴，" loading="lazy"></figure>
+<hr>
+<p><a name="HZ40V"></a></p>
+<h2 id="在和is之间选择">在==和is之间选择</h2>
+<p>:::info<br>
+==比较的是对象的值（对象中保存的数据），而is比较的是对象的标识（内存地址）<br>
+:::</p>
+<pre><code class="language-python">l1 = [1, 2, &quot;hello&quot;]
+l2 = [1, 2, &quot;hello&quot;]
+
+l1 == l2  // True
+l1 is l2  // False
+</code></pre>
+<p><code>is</code> 运算符比 <code>==</code>速度快，因为它不能重载，所以Python不用寻找并调用特殊方法，而是直接比较对象的标识（内存地址）。而<code>a==b</code>是语法糖，等同于 a.<strong>eq</strong>(b)，可能会涉及大量处理工作，例如：比较大型集合或嵌套层级深的结构时。</p>
+<hr>
+<p><a name="X6iFJ"></a></p>
+<h2 id="深浅拷贝">深浅拷贝</h2>
+<p>深浅拷贝的<strong>目标是可变类型对象</strong>，对不可类型进行深浅拷贝没有意义。<br>
+<a name="tLDHK"></a></p>
+<h3 id="浅拷贝">浅拷贝</h3>
+<p>如果我们需要复制一个列表对象，最简答的方法就是通过内置的类型构造方法，例如：</p>
+<pre><code class="language-python">l1 = [3, [55, 66], (7, 8, 9)]
+l2 = list(l1)  # list(l1) -&gt; 创建l1的副本
+
+print(l1 == l2)  # True  -&gt; 副本与原列表的值相同
+print(l1 is l2)  # Flase -&gt; 但是l1和l2是不同的对象
+print(l1[0] is l2[0])  # True  -&gt; 副本中的容器还是原容器的引用
+</code></pre>
+<p><strong>浅拷贝：即复制了最外层的容器，副本中的元素还是原容器的引用</strong>。如果容器中所有元素都是不可变类型，那么这样没有问题，如果是可变类型，可能得到的结果不是我们想要的，例如：</p>
+<pre><code class="language-python">l1 = [3, [55, 66], (7, 8, 9)]
+l2 = list(l1)  # list(l1) -&gt; 创建l1的副本
+
+l1.append(100)  # 把100追加到原容器中，不会影响l2
+print(l1)  # [3, [55, 66], (7, 8, 9), 100]
+print(l2)  # [3, [55, 66], (7, 8, 9)]
+
+l1[1].remove(55)  # 把原容器中l[1]的55移除，会对l2产生影响，因为l2[1]的列表对象引用是原容器的列表对象引用
+print(l1)  # [3, [66], (7, 8, 9), 100]
+print(l2)  # [3, [66], (7, 8, 9)]
+
+l2[1] += [33, 22]  # 对可变类型来说 += 是修改列表
+l2[2] += (10, 11)  # 对不可变类型来说 += 相当于创建一个新的对象，再把l2[2]指向该对象
+print(l1)  # [3, [66, 33, 22], (7, 8, 9), 100]
+print(l2)  # [3, [66, 33, 22], (7, 8, 9, 10, 11)]
+</code></pre>
+<p><a name="OWswz"></a></p>
+<h3 id="深拷贝">深拷贝</h3>
+<p>copy模块提供的deepcopy和copy函数能够为任意对象做深浅复制：</p>
+<pre><code class="language-python">import copy
+
+l1 = ['alice', 'bill', 'david', ['hello', 'world']]
+l2 = copy.copy(l1)
+l3 = copy.deepcopy(l1)
+print(l1 is l3)  # Flase
+print(l1[0] is l3[0])  # True  -&gt; 深复制操作：原容器中元素是不可变类型，还是原来的引用不影响
+print(l1[3] is l3[3])  # False  -&gt; 深复制操作：如果原容器中元素是可变类型也会拷贝一份，而不是引用
+</code></pre>
+<hr>
+<p><a name="xs6A0"></a></p>
+<h2 id="python的垃圾回收机制">Python的垃圾回收机制</h2>
+<p>程序运行过程中会申请大量的内存空间，而对于一些无用的内存空间如果不及时清理的话会导致内存使用殆尽（内存溢出），导致程序崩溃，因此管理内存是一件重要且繁杂的事情。通常来说，对于Python这种高级别的语言，开发者完成可以不用关心其内部的垃圾回收机制。相辅相成的通过学习Python内部的垃圾回收机制，并了解其原理，可以使得开发者能够更好的写代码。<br>
+<a name="ivU06"></a></p>
+<h3 id="垃圾回收算法">垃圾回收算法</h3>
+<p>标准CPython实现的垃圾收集器有两部分组件构成，一部分为<strong>引用计数</strong>模块(reference counting collector), 另一部分为<strong>分代垃圾回收器</strong>(generational garbage collector)。<br>
+<a name="mzrcj"></a></p>
+<h3 id="引用计数算法reference-counting">引用计数算法(reference counting)</h3>
+<p><strong>引用计数算法</strong>是最简单的垃圾回收算法：即对象当没有引用指向时，会被回收(deallocated)。<br />在Python的每一个对象中，都有一个 <strong>Py_ssize_t ob_refcnt <strong>变量，用于标识当前对象被引用的次数：<br /><img src="https://cdn.nlark.com/yuque/0/2023/png/34439782/1673342805706-9d46d1de-4d09-4be7-b2dc-20e93fff67b8.png#averageHue=%239a9898&amp;clientId=u80aba0b5-afc3-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=137&amp;id=u650fd498&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=137&amp;originWidth=354&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=29877&amp;status=done&amp;style=none&amp;taskId=uf2ee281e-10c4-4dc6-b2d1-37bcd9ff949&amp;title=&amp;width=354" alt="image.png" loading="lazy"><br>
+引用计数器</strong>导致引用计数 +1 的情况：</strong></p>
+<ul>
+<li>创建对象</li>
+<li>赋值操作</li>
+<li>函数传参</li>
+<li>对象作为元素被容器引用</li>
+</ul>
+<p><strong>导致引用计数 -1 的情况：</strong></p>
+<ul>
+<li>引用对象的变量被显式销毁，例如del a</li>
+<li>引用对象的变量被赋予新的对象，例如a=24</li>
+<li>一个对象离开它的作用域（函数执行完毕时，函数中的局部变量）</li>
+<li>对象所在的容器被销毁，或从容器中删除对象</li>
+</ul>
+<p>其次，还有**_PyObject_HEAD_EXTRA 变量，<strong>用于构造</strong>双向链表(refchain)**的，Python中每创建一个对象就会加入该链表中，当有垃圾变量被回收时就会移除该链表：<br /><img src="https://cdn.nlark.com/yuque/0/2023/png/34439782/1673342772019-eb680198-56d2-4ce4-a4f2-29bcecbcd3ce.png#averageHue=%23a09f9b&amp;clientId=u80aba0b5-afc3-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=124&amp;id=u6463e254&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=124&amp;originWidth=686&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=38449&amp;status=done&amp;style=none&amp;taskId=ud665d73f-57de-4fd7-b562-0a35302be83&amp;title=&amp;width=686" alt="image.png" loading="lazy"><br /><img src="https://cdn.nlark.com/yuque/0/2023/png/34439782/1673342690370-2e06ca01-a26a-4025-8193-f746443654d9.png#averageHue=%23c7c0b7&amp;clientId=u80aba0b5-afc3-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=261&amp;id=u30826915&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=261&amp;originWidth=747&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=51183&amp;status=done&amp;style=none&amp;taskId=u9fbfce4b-1808-419a-8af3-f7d706bb2ea&amp;title=&amp;width=747" alt="image.png" loading="lazy"><br />我们可以从下面的例子中，看一下对象的引用计数器增减情况，以及对象被销毁的过程：</p>
+<pre><code class="language-python">import weakref
+import sys
+
+s1 = {1, 2, 3}
+print(sys.getrefcount(s1)) # 2 -&gt; 一个来自s1变量,一个来自getrefcount函数
+s2 = s1
+print(sys.getrefcount(s1)) # 3 -&gt; 新增了一个s2变量
+
+def bye():
+    print(&quot;Gone with the wind....&quot;)
+
+# weakref.finalize是弱引用不会增加引用计数器值
+ender = weakref.finalize(s1, bye)  # 在s1的引用对象上,注册bye()函数
+
+del s1  # --&gt; del不删除对象,而是删除对象的引用
+print(sys.getrefcount(s2)) # 2 --&gt; 引用对象的计数器-1
+
+s2 = &quot;gg&quot;  # 给s2重新绑定一个引用 --&gt; {1, 2, 3}对象的计数器-1
+# 此时{1, 2, 3}对象的引用计数器值为0  --&gt; 调用回调函数bye():Gone with the wind....
+</code></pre>
+<p><a name="QTovS"></a></p>
+<h3 id="标记清除mark-and-sweep">标记清除(Mark and Sweep)</h3>
+<p>当存在下面的情况时(<strong>循环引用</strong>)，引用计数算法无法很好的完成垃圾回收工作：</p>
+<pre><code class="language-python">import sys
+
+v1 = [11, 22, 33]  # 列表对象1
+v2 = [44, 55, 66]  # 列表对象2 
+
+v1.append(v2) 
+v2.append(v1)
+
+del v1
+del v2
+
+# 此时已经没有变量指向对象列表1和列表2了,这两个对象应该被当作垃圾回收
+# 但是因为上面的循环引用的操作,导致这两个对象的计数器值还为1,导致通过gc算法无法回收这两个对象
+</code></pre>
+<p>标记清除算法是一种基于追踪回收(tracing GC)技术实现的垃圾回收算法。主要由两段操作构造：标记(Mark)和清除(Sweep)。<br />标记清除算法作为 Python 的辅助垃圾收集技术主要处理的是一些容器对象，比如 list、dict、tuple，instance 等可能造成循环引用问题的对象，Python 使用一个双向链表将这些容器对象组织起来。定期会对这些对象进行扫描，如果存在循环引用的就使双方的引用计数器-1。<br>
+标记清除标记清除（Mark—Sweep）』算法是一种基于追踪回收（tracing GC）技术实现的垃圾回收算法。它分为两个阶段：第一阶段是标记阶段，GC 会把所有的『活动对象』打上标记，第二阶段是把那些没有标记的对象『非活动对象』进行回收。<br /><img src="https://cdn.nlark.com/yuque/0/2023/png/34439782/1673343493796-ab84e540-41d9-4f44-bb9b-5898e587728f.png#averageHue=%23cccccc&amp;clientId=u80aba0b5-afc3-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=299&amp;id=ubdf87c5e&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=299&amp;originWidth=520&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=26408&amp;status=done&amp;style=none&amp;taskId=ubcbd2e77-16f3-479b-96d8-427f7b10eda&amp;title=&amp;width=520" alt="image.png" loading="lazy"><br />对象之间通过引用（指针）连在一起，构成一个有向图，对象构成这个有向图的节点，而引用关系构成这个有向图的边。从根对象（root object）出发，沿着有向边遍历对象，可达的（reachable）对象标记为活动对象，不可达的对象就是要被清除的非活动对象。根对象就是全局变量、调用栈、寄存器。 mark-sweepg 在上图中，我们把小黑圈视为全局变量，也就是把它作为 root object，从小黑圈出发，对象 1 可直达，那么它将被标记，对象 2、3 可间接到达也会被标记，而 4 和 5 不可达，那么 1、2、3 就是活动对象，4 和 5 是非活动对象会被 GC 回收。</p>
+<p>标记清除算法的优点在于可以解决循环引用的问题，并且在整个算法执行的过程中没有额外的开销。<br />标记清除算法的最主要缺点在于当执行标记清除时正常的程序将会被阻塞，另外一个缺点在于标记清除算法在执行很多次数后，会在程序的堆空间会产生一些小的内存碎片：<br /><img src="https://cdn.nlark.com/yuque/0/2023/png/34439782/1673344065068-f599f9be-74e1-4b1e-a042-81fe274b5540.png#averageHue=%238f8f8f&amp;clientId=u80aba0b5-afc3-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=146&amp;id=u72e7069c&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=146&amp;originWidth=726&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=true&amp;size=9487&amp;status=done&amp;style=none&amp;taskId=ud6d0351c-a470-4e15-a08f-8de5fb19f79&amp;title=Heap%20Memory&amp;width=726" alt="image.png" title="Heap Memory" loading="lazy"><br>
+<a name="rPtQw"></a></p>
+<h3 id="分代回收generational-garbage-collector">分代回收(Generational garbage collector）</h3>
+<p>分代回收算法是基于标记清除的，主要解决循环引用或自引用的问题。<br />首先GC分类器会将可能存在循环引用的对象分为<strong>三个双向链表（三代）</strong>，每个新创建的对象属于第0代，每当对象在某代的垃圾回收中存活下来，就移至下一代。较低的代会更加频繁的进行垃圾回收（大部分对象在创建后很快就会消亡）。<br />在标准Python 3.6版本中通过gc.get_threashold函数可以获得每代的阈值：700、10、10。当代中对象数量达到阈值后就会进行一次垃圾回收。</p>
+<p><a name="WaC7U"></a></p>
+<h3 id="总结-2">总结</h3>
+<blockquote>
+<p>Python的垃圾回收以引用计数算法为主，标记清除和分代回收算法为辅</p>
+</blockquote>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Hello Gridea]]></title>
+        <id>https://zzggtt.github.io/hello-gridea/</id>
+        <link href="https://zzggtt.github.io/hello-gridea/">
+        </link>
+        <updated>2018-12-11T16:00:00.000Z</updated>
+        <summary type="html"><![CDATA[<p>👏  欢迎使用 <strong>Gridea</strong> ！<br>
+✍️  <strong>Gridea</strong> 一个静态博客写作客户端。你可以用它来记录你的生活、心情、知识、笔记、创意... ...</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>👏  欢迎使用 <strong>Gridea</strong> ！<br>
+✍️  <strong>Gridea</strong> 一个静态博客写作客户端。你可以用它来记录你的生活、心情、知识、笔记、创意... ...</p>
+<!-- more -->
+<p><a href="https://github.com/getgridea/gridea">Github</a><br>
+<a href="https://gridea.dev/">Gridea 主页</a><br>
+<a href="https://fehey.com/">示例网站</a></p>
+<h2 id="特性">特性👇</h2>
+<p>📝  你可以使用最酷的 <strong>Markdown</strong> 语法，进行快速创作</p>
+<p>🌉  你可以给文章配上精美的封面图和在文章任意位置插入图片</p>
+<p>🏷️  你可以对文章进行标签分组</p>
+<p>📋  你可以自定义菜单，甚至可以创建外部链接菜单</p>
+<p>💻  你可以在 <strong>Windows</strong>，<strong>MacOS</strong> 或 <strong>Linux</strong> 设备上使用此客户端</p>
+<p>🌎  你可以使用 <strong>𝖦𝗂𝗍𝗁𝗎𝖻 𝖯𝖺𝗀𝖾𝗌</strong> 或 <strong>Coding Pages</strong> 向世界展示，未来将支持更多平台</p>
+<p>💬  你可以进行简单的配置，接入 <a href="https://github.com/gitalk/gitalk">Gitalk</a> 或 <a href="https://github.com/SukkaW/DisqusJS">DisqusJS</a> 评论系统</p>
+<p>🇬🇧  你可以使用<strong>中文简体</strong>或<strong>英语</strong></p>
+<p>🌁  你可以任意使用应用内默认主题或任意第三方主题，强大的主题自定义能力</p>
+<p>🖥  你可以自定义源文件夹，利用 OneDrive、百度网盘、iCloud、Dropbox 等进行多设备同步</p>
+<p>🌱 当然 <strong>Gridea</strong> 还很年轻，有很多不足，但请相信，它会不停向前 🏃</p>
+<p>未来，它一定会成为你离不开的伙伴</p>
+<p>尽情发挥你的才华吧！</p>
+<p>😘 Enjoy~</p>
+]]></content>
+    </entry>
+</feed>

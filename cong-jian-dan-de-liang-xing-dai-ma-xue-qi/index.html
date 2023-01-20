@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+<title>
+    ZGGTT
+</title>
+<!--[if lt IE 9]><script src="//cdn.bootcss.com/html5shiv/r29/html5.js"></script><![endif]-->
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+<meta http-equiv="x-dns-prefetch-control" content="on">
+<link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+<meta name="author" content="ZZGGTT">
+<meta name="description" content="">
+<meta name="keywords" content="">
+<script async src="//instant.page/3.0.0" type="module" defer integrity="sha384-OeDn4XE77tdHo8pGtE1apMPmAipjoxUQ++eeJa6EtJCfHlvijigWiJpD7VDPWXV1"></script>
+<link rel="stylesheet" href="https://zzggtt.github.io/styles/main.css" />
+<link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+<script type="text/javascript" src="https://apps.bdimg.com/libs/jquery/1.7.1/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/itjoker233/Gridea-theme-Chic/assets/media/css/style.min.css" />
+    <script src="https://cdn.jsdelivr.net/gh/itjoker233/Gridea-theme-Chic/assets/media/script/tocbot.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/itjoker233/Gridea-theme-Chic/assets/media/script/script.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/itjoker233/Gridea-theme-Chic/assets/media/script/icon.min.js"></script>
+    
+            <script src="https://cdn.jsdelivr.net/gh/ITJoker233/ITJoker233.github.io@1.0.12/CDN/js/Card/prism.min.js"></script>
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/ITJoker233/ITJoker233.github.io@1.0.12/CDN/css/Card/prism.min.css" />
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.1/dist/katex.min.css">
+            <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.1/dist/katex.min.js"></script>
+            
+                        <!--CDN样式-->
+                        <script src="https://cdn.jsdelivr.net/gh/ITJoker233/ITJoker233.github.io@latest/CDN/js/hit-kounter-lc-0.3.0.js"></script>
+                        <script src="https://cdn1.lncld.net/static/js/av-min-1.5.0.js"></script>
+                        
+                            <script>
+                                (function() {
+                                    var bp = document.createElement('script');
+                                    var curProtocol = window.location.protocol.split(':')[0];
+                                    if (curProtocol === 'https') {
+                                        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+                                    } else {
+                                        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+                                    }
+                                    var s = document.getElementsByTagName("script")[0];
+                                    s.parentNode.insertBefore(bp, s);
+                                })();
+                            </script>
+                            
+</head>
+
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo">
+                <a href="https://zzggtt.github.io">
+                    ZGGTT
+                </a>
+            </div>
+
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/">
+                        首页
+                    </a>
+                    
+                    <a class="menu-item" href="/archives">
+                        归档
+                    </a>
+                    
+                    <a class="menu-item" href="/tags">
+                        标签
+                    </a>
+                    
+                    <a class="menu-item" href="/post/about">
+                        关于
+                    </a>
+                    
+                        <input id="switch_default" type="checkbox" class="switch_default">
+                        <label for="switch_default" class="toggleBtn"></label>
+            </div>
+            <form id="gridea-search-form" data-update="1674199567242" action="/search/index.html">
+                <input class="search-input" autocomplete="off" spellcheck="false" name="q" autofocus="true" placeholder="Search...">
+            </form>
+        </div>
+    </nav>
+
+    
+        <nav class="navbar-mobile" id="nav-mobile">
+            <div class="container">
+                <div class="navbar-header">
+                    <div>
+                        <a href="https://zzggtt.github.io">
+                            ZGGTT
+                        </a>
+                        <!--en-->
+                        <a id="mobile-toggle-theme-en" class="a en">&nbsp;Dark</a>
+                        <!--zh-->
+                        <a id="mobile-toggle-theme-zh" class="a zh">&nbsp;&#x6697;&#x9ED1;</a>
+                    </div>
+                    <form id="gridea-search-form" data-update="1674199567242" action="/search/index.html">
+                        <input class="search-input" autocomplete="off" spellcheck="false" name="q" autofocus="true" placeholder="Search...">
+                    </form>
+                    <!--en-->
+                    <div class="menu-toggle" id="menu-toggle-en" onclick="mobileBtn()">&#9776; Menu</div>
+                    <!--zh-->
+                    <div class="menu-toggle" id="menu-toggle-zh" onclick="mobileBtn()">&#9776; &#x83DC;&#x5355;</div>
+
+                </div>
+                <div class="menu" id="mobile-menu">
+                    
+                        <a class="menu-item" href="/">
+                            首页
+                        </a>
+                        
+                        <a class="menu-item" href="/archives">
+                            归档
+                        </a>
+                        
+                        <a class="menu-item" href="/tags">
+                            标签
+                        </a>
+                        
+                        <a class="menu-item" href="/post/about">
+                            关于
+                        </a>
+                        
+                </div>
+            </div>
+        </nav>
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementById("menu-toggle-en");
+        var toggleMenu_zh = document.getElementById("menu-toggle-zh");
+
+        var mobileMenu = document.getElementById("mobile-menu");
+        if (toggleMenu.display != "none") {
+            if (toggleMenu.classList.contains("active")) {
+                toggleMenu.classList.remove("active")
+                mobileMenu.classList.remove("active")
+            } else {
+                toggleMenu.classList.add("active")
+                mobileMenu.classList.add("active")
+            }
+        } else if (toggleMenu_zh.display != "none") {
+            if (toggleMenu_zh.classList.contains("active")) {
+                toggleMenu_zh.classList.remove("active")
+                mobileMenu.classList.remove("active")
+            } else {
+                toggleMenu_zh.classList.add("active")
+                mobileMenu.classList.add("active")
+            }
+        }
+
+    }
+</script>
+            <div class="main">
+                <div class="container">
+                    <article class="post-wrap">
+                        <header class="post-header">
+                            <h1 class="post-title">
+                                从简单的两行代码学起
+                            </h1>
+                            
+                                <!--en-->
+                                <div class="post-meta en">
+                                    Author:
+                                    <a itemprop="author" rel="author" href="/">
+                                        ZGGTT
+                                    </a>
+                                    <span class="post-time">
+                                Date: <a href="#">2023-01-10</a>
+                            </span>
+                                    <span class="post-readtime">Reading Time:<a
+                                    href="#">10.8
+                                    mins</a></span>
+                                    <span class="post-words">words:<a href="#">2819</a></span>
+                                    
+                                            Views:
+                                            <span data-hk-page="current"> - </span>
+                                            
+                                </div>
+                                
+                        </header>
+                        
+                        <div class="post-content">
+                            <p>首先我们从下面一段简单的代码出发，里面涉及到了多个知识点：</p>
+<pre><code class="language-python">data1 = 3.14
+data2 = data1
+</code></pre>
+<p><a name="cLoEB"></a></p>
+<h2 id="赋值语句的执行顺序是什么">赋值语句的执行顺序是什么？</h2>
+<pre><code class="language-python">class Gizmo:
+    def __init__(self) -&gt; None:
+        print('Gizmo id: {}'.format(id(self)))  # 实例化对象时,打印对象的标识(内存地址)
+
+
+x = Gizmo() # Gizmo id: 140650247909160
+# 先打印：Gizmo id: 140650248064696
+# 然后抛出异常:TypeError: unsupported operand type(s) for *: 'Gizmo' and 'int'
+y = Gizmo() * 10
+
+</code></pre>
+<p>从上面的例子中我们可以看出，为了理解Python中赋值语句，应该始终先读右边。<strong>对象在右边先创建或获取，在此之后左边的变量才会绑定到对象上</strong>。</p>
+<hr>
+<p><a name="mqpxg"></a></p>
+<h2 id="对象底层实现原理">对象底层实现原理</h2>
+<p><a name="Bj5QW"></a></p>
+<h3 id="pyobject">PyObject</h3>
+<p>先来看看Python3.7的源码，可以参考下面链接：<a href="https://github.com/python/cpython/blob/949fe976d5c62ae63ed505ecf729f815d0baccfc/Include/object.h">https://github.com/python/cpython/blob/949fe976d5c62ae63ed505ecf729f815d0baccfc/Include/object.h</a><br /><img src="https://cdn.nlark.com/yuque/0/2023/png/34439782/1673320626426-cccc2553-c87f-4c03-9564-3acfe935e3b1.png#averageHue=%23d5d5d5&amp;clientId=u84736c05-44fb-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=400&amp;id=u710881b4&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=400&amp;originWidth=636&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=112772&amp;status=done&amp;style=none&amp;taskId=u51f842c3-53b1-4e02-9efd-8ac1700311e&amp;title=&amp;width=636" alt="image.png" loading="lazy"><br />可以看到<strong>PyObjcet和PyVarObject</strong>中有四部分内容：</p>
+<ul>
+<li>**_PyObject_HEAD_EXTRA：**宏定义，包含上一个、下一个对象指针，用于构造双向循环链表</li>
+</ul>
+<figure data-type="image" tabindex="1"><img src="https://cdn.nlark.com/yuque/0/2023/png/34439782/1673320870243-cc6eb702-3bb0-4681-a49e-e462487798a9.png#averageHue=%239e9e9e&amp;clientId=u84736c05-44fb-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=119&amp;id=u8e6286d9&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=119&amp;originWidth=686&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=35911&amp;status=done&amp;style=none&amp;taskId=ua13563de-4008-45ca-9e54-a031e2735be&amp;title=&amp;width=686" alt="image.png" loading="lazy"></figure>
+<ul>
+<li>**Py_ssize_t ob_refcnt：**对象引用计数器，用于垃圾回收</li>
+<li>**_typeobject *ob_type：**对象类型</li>
+<li><strong>ob_size</strong>：容器中对象个数</li>
+</ul>
+<p><a name="iqhoV"></a></p>
+<h3 id="pyfloatobject">PyFloatObject</h3>
+<p>再看下Python内置的数据类型<code>float</code>的底层实现原理，可参考下面链接：<a href="https://github.com/python/cpython/blob/949fe976d5c62ae63ed505ecf729f815d0baccfc/Include/floatobject.h">https://github.com/python/cpython/blob/949fe976d5c62ae63ed505ecf729f815d0baccfc/Include/floatobject.h</a><br /><img src="https://cdn.nlark.com/yuque/0/2023/png/34439782/1673321611974-093c3dc8-5b38-4e7c-b06b-60dcd60e82dc.png#averageHue=%23d4d4d4&amp;clientId=u84736c05-44fb-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=356&amp;id=u266d8c62&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=356&amp;originWidth=605&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=64031&amp;status=done&amp;style=none&amp;taskId=u0e87a0b9-8283-4e4f-b755-ab2a24027a0&amp;title=&amp;width=605" alt="image.png" loading="lazy"></p>
+<ul>
+<li>**PyObject_HEAD：**是在<a href="https://github.com/python/cpython/blob/949fe976d5c62ae63ed505ecf729f815d0baccfc/Include/object.h">object.h</a>中的宏定义，本质是PyObject</li>
+</ul>
+<figure data-type="image" tabindex="2"><img src="https://cdn.nlark.com/yuque/0/2023/png/34439782/1673321728008-7234ea63-f2bb-4fcc-95c1-78262a89a206.png#averageHue=%236b6861&amp;clientId=u84736c05-44fb-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=76&amp;id=u6d3aeed1&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=76&amp;originWidth=586&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=26823&amp;status=done&amp;style=none&amp;taskId=u55a43933-84e2-403e-a3f2-a5c6bdbabe8&amp;title=&amp;width=586" alt="image.png" loading="lazy"></figure>
+<ul>
+<li>**ob_fval：**用于保存float类型对象的值</li>
+</ul>
+<p><a name="b5V68"></a></p>
+<h3 id="pylistobject">PyListObject</h3>
+<p>再看下Python内置的数据类<code>list</code>的底层实现原理，可参考下面链接：<br /><a href="https://github.com/python/cpython/blob/949fe976d5c62ae63ed505ecf729f815d0baccfc/Include/listobject.h">https://github.com/python/cpython/blob/949fe976d5c62ae63ed505ecf729f815d0baccfc/Include/listobject.h</a><br /><img src="https://cdn.nlark.com/yuque/0/2023/png/34439782/1673322005904-ab653837-38f3-4b06-95ff-eea1450f684a.png#averageHue=%23d6d6d6&amp;clientId=u84736c05-44fb-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=397&amp;id=ue76782bf&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=397&amp;originWidth=660&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=106641&amp;status=done&amp;style=none&amp;taskId=u78db343b-799f-45ff-a08c-ab98d120de9&amp;title=&amp;width=660" alt="image.png" loading="lazy"></p>
+<ul>
+<li>**PyObject_VAR_HEAD：**是在<a href="https://github.com/python/cpython/blob/949fe976d5c62ae63ed505ecf729f815d0baccfc/Include/object.h">object.h</a>中的宏定义，本质是PyVarObject</li>
+</ul>
+<figure data-type="image" tabindex="3"><img src="https://cdn.nlark.com/yuque/0/2023/png/34439782/1673322109102-897fac5a-0189-4cce-94f0-ddcc6de31f5f.png#averageHue=%23b4b4b4&amp;clientId=u84736c05-44fb-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=181&amp;id=u50585fba&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=181&amp;originWidth=630&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=63332&amp;status=done&amp;style=none&amp;taskId=u132e987c-3874-4e6e-9a34-68c30104ef7&amp;title=&amp;width=630" alt="image.png" loading="lazy"></figure>
+<ul>
+<li>**PyObject **ob_item：**指针列表，里面的每一个指针都指向列表对象的标识（内存地址）</li>
+<li>**Py_ssize_t allocated：**存储了列表已分配的内存空间大小<br>
+<a name="FZoIU"></a></li>
+</ul>
+<h3 id="总结">总结</h3>
+<p>每个Python对象都有标识（内存地址）、类型、值、双向循环链表上下指针、引用计数器（后两个用于Python内部实现垃圾回收）。</p>
+<hr>
+<p><a name="dSG7C"></a></p>
+<h2 id="变量是什么">变量是什么？</h2>
+<p>人们经常使用“变量是盒子”这样的比喻，但是这有碍于理解面向对象语言中的引用式变量。Python变量类似于Java中的引用变量，因此最好把它们理解为附加在对象上的<strong>标注（类似于便利贴）</strong>。<br />例如下面的例子，就无法使用“变量是盒子”做解释：</p>
+<pre><code class="language-python">a = [1, 2, 3]
+b = a
+a.append(4)
+print(b)  // [1, 2, 3, 4]
+</code></pre>
+<figure data-type="image" tabindex="4"><img src="https://cdn.nlark.com/yuque/0/2023/png/34439782/1673318321576-811cd4bd-2307-41c5-82d2-1497634c3dac.png#averageHue=%23c7c6c4&amp;clientId=u84736c05-44fb-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=267&amp;id=OUYHe&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=267&amp;originWidth=523&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=true&amp;size=37499&amp;status=done&amp;style=none&amp;taskId=ud251b923-80b7-48c4-b4bf-86038804caf&amp;title=%E5%BA%94%E8%AF%A5%E6%8A%8A%E5%8F%98%E9%87%8F%E8%A7%86%E4%BD%9C%E4%BE%BF%E5%88%A9%E8%B4%B4%EF%BC%8C&amp;width=523" alt="image.png" title="应该把变量视作便利贴，" loading="lazy"></figure>
+<hr>
+<p><a name="HZ40V"></a></p>
+<h2 id="在和is之间选择">在==和is之间选择</h2>
+<p>:::info<br>
+==比较的是对象的值（对象中保存的数据），而is比较的是对象的标识（内存地址）<br>
+:::</p>
+<pre><code class="language-python">l1 = [1, 2, &quot;hello&quot;]
+l2 = [1, 2, &quot;hello&quot;]
+
+l1 == l2  // True
+l1 is l2  // False
+</code></pre>
+<p><code>is</code> 运算符比 <code>==</code>速度快，因为它不能重载，所以Python不用寻找并调用特殊方法，而是直接比较对象的标识（内存地址）。而<code>a==b</code>是语法糖，等同于 a.<strong>eq</strong>(b)，可能会涉及大量处理工作，例如：比较大型集合或嵌套层级深的结构时。</p>
+<hr>
+<p><a name="X6iFJ"></a></p>
+<h2 id="深浅拷贝">深浅拷贝</h2>
+<p>深浅拷贝的<strong>目标是可变类型对象</strong>，对不可类型进行深浅拷贝没有意义。<br>
+<a name="tLDHK"></a></p>
+<h3 id="浅拷贝">浅拷贝</h3>
+<p>如果我们需要复制一个列表对象，最简答的方法就是通过内置的类型构造方法，例如：</p>
+<pre><code class="language-python">l1 = [3, [55, 66], (7, 8, 9)]
+l2 = list(l1)  # list(l1) -&gt; 创建l1的副本
+
+print(l1 == l2)  # True  -&gt; 副本与原列表的值相同
+print(l1 is l2)  # Flase -&gt; 但是l1和l2是不同的对象
+print(l1[0] is l2[0])  # True  -&gt; 副本中的容器还是原容器的引用
+</code></pre>
+<p><strong>浅拷贝：即复制了最外层的容器，副本中的元素还是原容器的引用</strong>。如果容器中所有元素都是不可变类型，那么这样没有问题，如果是可变类型，可能得到的结果不是我们想要的，例如：</p>
+<pre><code class="language-python">l1 = [3, [55, 66], (7, 8, 9)]
+l2 = list(l1)  # list(l1) -&gt; 创建l1的副本
+
+l1.append(100)  # 把100追加到原容器中，不会影响l2
+print(l1)  # [3, [55, 66], (7, 8, 9), 100]
+print(l2)  # [3, [55, 66], (7, 8, 9)]
+
+l1[1].remove(55)  # 把原容器中l[1]的55移除，会对l2产生影响，因为l2[1]的列表对象引用是原容器的列表对象引用
+print(l1)  # [3, [66], (7, 8, 9), 100]
+print(l2)  # [3, [66], (7, 8, 9)]
+
+l2[1] += [33, 22]  # 对可变类型来说 += 是修改列表
+l2[2] += (10, 11)  # 对不可变类型来说 += 相当于创建一个新的对象，再把l2[2]指向该对象
+print(l1)  # [3, [66, 33, 22], (7, 8, 9), 100]
+print(l2)  # [3, [66, 33, 22], (7, 8, 9, 10, 11)]
+</code></pre>
+<p><a name="OWswz"></a></p>
+<h3 id="深拷贝">深拷贝</h3>
+<p>copy模块提供的deepcopy和copy函数能够为任意对象做深浅复制：</p>
+<pre><code class="language-python">import copy
+
+l1 = ['alice', 'bill', 'david', ['hello', 'world']]
+l2 = copy.copy(l1)
+l3 = copy.deepcopy(l1)
+print(l1 is l3)  # Flase
+print(l1[0] is l3[0])  # True  -&gt; 深复制操作：原容器中元素是不可变类型，还是原来的引用不影响
+print(l1[3] is l3[3])  # False  -&gt; 深复制操作：如果原容器中元素是可变类型也会拷贝一份，而不是引用
+</code></pre>
+<hr>
+<p><a name="xs6A0"></a></p>
+<h2 id="python的垃圾回收机制">Python的垃圾回收机制</h2>
+<p>程序运行过程中会申请大量的内存空间，而对于一些无用的内存空间如果不及时清理的话会导致内存使用殆尽（内存溢出），导致程序崩溃，因此管理内存是一件重要且繁杂的事情。通常来说，对于Python这种高级别的语言，开发者完成可以不用关心其内部的垃圾回收机制。相辅相成的通过学习Python内部的垃圾回收机制，并了解其原理，可以使得开发者能够更好的写代码。<br>
+<a name="ivU06"></a></p>
+<h3 id="垃圾回收算法">垃圾回收算法</h3>
+<p>标准CPython实现的垃圾收集器有两部分组件构成，一部分为<strong>引用计数</strong>模块(reference counting collector), 另一部分为<strong>分代垃圾回收器</strong>(generational garbage collector)。<br>
+<a name="mzrcj"></a></p>
+<h3 id="引用计数算法reference-counting">引用计数算法(reference counting)</h3>
+<p><strong>引用计数算法</strong>是最简单的垃圾回收算法：即对象当没有引用指向时，会被回收(deallocated)。<br />在Python的每一个对象中，都有一个 <strong>Py_ssize_t ob_refcnt <strong>变量，用于标识当前对象被引用的次数：<br /><img src="https://cdn.nlark.com/yuque/0/2023/png/34439782/1673342805706-9d46d1de-4d09-4be7-b2dc-20e93fff67b8.png#averageHue=%239a9898&amp;clientId=u80aba0b5-afc3-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=137&amp;id=u650fd498&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=137&amp;originWidth=354&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=29877&amp;status=done&amp;style=none&amp;taskId=uf2ee281e-10c4-4dc6-b2d1-37bcd9ff949&amp;title=&amp;width=354" alt="image.png" loading="lazy"><br>
+引用计数器</strong>导致引用计数 +1 的情况：</strong></p>
+<ul>
+<li>创建对象</li>
+<li>赋值操作</li>
+<li>函数传参</li>
+<li>对象作为元素被容器引用</li>
+</ul>
+<p><strong>导致引用计数 -1 的情况：</strong></p>
+<ul>
+<li>引用对象的变量被显式销毁，例如del a</li>
+<li>引用对象的变量被赋予新的对象，例如a=24</li>
+<li>一个对象离开它的作用域（函数执行完毕时，函数中的局部变量）</li>
+<li>对象所在的容器被销毁，或从容器中删除对象</li>
+</ul>
+<p>其次，还有**_PyObject_HEAD_EXTRA 变量，<strong>用于构造</strong>双向链表(refchain)**的，Python中每创建一个对象就会加入该链表中，当有垃圾变量被回收时就会移除该链表：<br /><img src="https://cdn.nlark.com/yuque/0/2023/png/34439782/1673342772019-eb680198-56d2-4ce4-a4f2-29bcecbcd3ce.png#averageHue=%23a09f9b&amp;clientId=u80aba0b5-afc3-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=124&amp;id=u6463e254&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=124&amp;originWidth=686&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=38449&amp;status=done&amp;style=none&amp;taskId=ud665d73f-57de-4fd7-b562-0a35302be83&amp;title=&amp;width=686" alt="image.png" loading="lazy"><br /><img src="https://cdn.nlark.com/yuque/0/2023/png/34439782/1673342690370-2e06ca01-a26a-4025-8193-f746443654d9.png#averageHue=%23c7c0b7&amp;clientId=u80aba0b5-afc3-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=261&amp;id=u30826915&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=261&amp;originWidth=747&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=51183&amp;status=done&amp;style=none&amp;taskId=u9fbfce4b-1808-419a-8af3-f7d706bb2ea&amp;title=&amp;width=747" alt="image.png" loading="lazy"><br />我们可以从下面的例子中，看一下对象的引用计数器增减情况，以及对象被销毁的过程：</p>
+<pre><code class="language-python">import weakref
+import sys
+
+s1 = {1, 2, 3}
+print(sys.getrefcount(s1)) # 2 -&gt; 一个来自s1变量,一个来自getrefcount函数
+s2 = s1
+print(sys.getrefcount(s1)) # 3 -&gt; 新增了一个s2变量
+
+def bye():
+    print(&quot;Gone with the wind....&quot;)
+
+# weakref.finalize是弱引用不会增加引用计数器值
+ender = weakref.finalize(s1, bye)  # 在s1的引用对象上,注册bye()函数
+
+del s1  # --&gt; del不删除对象,而是删除对象的引用
+print(sys.getrefcount(s2)) # 2 --&gt; 引用对象的计数器-1
+
+s2 = &quot;gg&quot;  # 给s2重新绑定一个引用 --&gt; {1, 2, 3}对象的计数器-1
+# 此时{1, 2, 3}对象的引用计数器值为0  --&gt; 调用回调函数bye():Gone with the wind....
+</code></pre>
+<p><a name="QTovS"></a></p>
+<h3 id="标记清除mark-and-sweep">标记清除(Mark and Sweep)</h3>
+<p>当存在下面的情况时(<strong>循环引用</strong>)，引用计数算法无法很好的完成垃圾回收工作：</p>
+<pre><code class="language-python">import sys
+
+v1 = [11, 22, 33]  # 列表对象1
+v2 = [44, 55, 66]  # 列表对象2 
+
+v1.append(v2) 
+v2.append(v1)
+
+del v1
+del v2
+
+# 此时已经没有变量指向对象列表1和列表2了,这两个对象应该被当作垃圾回收
+# 但是因为上面的循环引用的操作,导致这两个对象的计数器值还为1,导致通过gc算法无法回收这两个对象
+</code></pre>
+<p>标记清除算法是一种基于追踪回收(tracing GC)技术实现的垃圾回收算法。主要由两段操作构造：标记(Mark)和清除(Sweep)。<br />标记清除算法作为 Python 的辅助垃圾收集技术主要处理的是一些容器对象，比如 list、dict、tuple，instance 等可能造成循环引用问题的对象，Python 使用一个双向链表将这些容器对象组织起来。定期会对这些对象进行扫描，如果存在循环引用的就使双方的引用计数器-1。<br>
+标记清除标记清除（Mark—Sweep）』算法是一种基于追踪回收（tracing GC）技术实现的垃圾回收算法。它分为两个阶段：第一阶段是标记阶段，GC 会把所有的『活动对象』打上标记，第二阶段是把那些没有标记的对象『非活动对象』进行回收。<br /><img src="https://cdn.nlark.com/yuque/0/2023/png/34439782/1673343493796-ab84e540-41d9-4f44-bb9b-5898e587728f.png#averageHue=%23cccccc&amp;clientId=u80aba0b5-afc3-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=299&amp;id=ubdf87c5e&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=299&amp;originWidth=520&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;size=26408&amp;status=done&amp;style=none&amp;taskId=ubcbd2e77-16f3-479b-96d8-427f7b10eda&amp;title=&amp;width=520" alt="image.png" loading="lazy"><br />对象之间通过引用（指针）连在一起，构成一个有向图，对象构成这个有向图的节点，而引用关系构成这个有向图的边。从根对象（root object）出发，沿着有向边遍历对象，可达的（reachable）对象标记为活动对象，不可达的对象就是要被清除的非活动对象。根对象就是全局变量、调用栈、寄存器。 mark-sweepg 在上图中，我们把小黑圈视为全局变量，也就是把它作为 root object，从小黑圈出发，对象 1 可直达，那么它将被标记，对象 2、3 可间接到达也会被标记，而 4 和 5 不可达，那么 1、2、3 就是活动对象，4 和 5 是非活动对象会被 GC 回收。</p>
+<p>标记清除算法的优点在于可以解决循环引用的问题，并且在整个算法执行的过程中没有额外的开销。<br />标记清除算法的最主要缺点在于当执行标记清除时正常的程序将会被阻塞，另外一个缺点在于标记清除算法在执行很多次数后，会在程序的堆空间会产生一些小的内存碎片：<br /><img src="https://cdn.nlark.com/yuque/0/2023/png/34439782/1673344065068-f599f9be-74e1-4b1e-a042-81fe274b5540.png#averageHue=%238f8f8f&amp;clientId=u80aba0b5-afc3-4&amp;crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=paste&amp;height=146&amp;id=u72e7069c&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=146&amp;originWidth=726&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=true&amp;size=9487&amp;status=done&amp;style=none&amp;taskId=ud6d0351c-a470-4e15-a08f-8de5fb19f79&amp;title=Heap%20Memory&amp;width=726" alt="image.png" title="Heap Memory" loading="lazy"><br>
+<a name="rPtQw"></a></p>
+<h3 id="分代回收generational-garbage-collector">分代回收(Generational garbage collector）</h3>
+<p>分代回收算法是基于标记清除的，主要解决循环引用或自引用的问题。<br />首先GC分类器会将可能存在循环引用的对象分为<strong>三个双向链表（三代）</strong>，每个新创建的对象属于第0代，每当对象在某代的垃圾回收中存活下来，就移至下一代。较低的代会更加频繁的进行垃圾回收（大部分对象在创建后很快就会消亡）。<br />在标准Python 3.6版本中通过gc.get_threashold函数可以获得每代的阈值：700、10、10。当代中对象数量达到阈值后就会进行一次垃圾回收。</p>
+<p><a name="WaC7U"></a></p>
+<h3 id="总结-2">总结</h3>
+<blockquote>
+<p>Python的垃圾回收以引用计数算法为主，标记清除和分代回收算法为辅</p>
+</blockquote>
+
+                        </div>
+                        
+                                
+                                    
+                                        <!--en-->
+                                        <section class="post-copyright en">
+                                            <p class="copyright-item">
+                                                <span>Author:</span>
+                                                <span>ZGGTT</span>
+                                            </p>
+
+                                            <p class="copyright-item">
+                                                <span>Permalink:</span>
+                                                <span><a href="https://zzggtt.github.io/cong-jian-dan-de-liang-xing-dai-ma-xue-qi/">https://zzggtt.github.io/cong-jian-dan-de-liang-xing-dai-ma-xue-qi/</a></span>
+                                            </p>
+
+                                            <p class="copyright-item">
+                                                <span>License:</span>
+                                                <span>MIT License</span>
+                                            </p>
+                                        </section>
+                                        
+                                                
+                                                    
+                                                        <!-- Share-->
+                                                        <span style="margin-right:15px">
+                                                    <i class="post-share"></i>
+                                                    <span>Share:</span>
+                                                        <a title="QR Code" target="_blank" href="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://zzggtt.github.io/cong-jian-dan-de-liang-xing-dai-ma-xue-qi/"><i class="fa fa-qrcode"></i></a>
+                                                        <a title="QQ" target="_blank" href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://zzggtt.github.io/cong-jian-dan-de-liang-xing-dai-ma-xue-qi/&sharesource=qzone&title=从简单的两行代码学起&pics=https://zzggtt.github.io/images/avatar.png?v=1674199567242&summary="><i class="fa fa-qq"></i></a>
+                                                        <a title="Weibo" target="_blank" href="https://service.weibo.com/share/share.php?url=https://zzggtt.github.io/cong-jian-dan-de-liang-xing-dai-ma-xue-qi/&sharesource=weibo&title=从简单的两行代码学起 + " - " + &pic="https://zzggtt.github.io/images/avatar.png?v=1674199567242 "><i class="fa fa-weibo "></i></a>
+                                                        
+                                                                </span>
+                                                                <!--en-->
+                                                                <section class="post-tags en ">
+                                                                    <div>
+                                                                        <span>Tag(s):</span>
+                                                                        <span class="tag ">
+                        
+                                                            </span>
+                                                                    </div>
+                                                                    <div>
+                                                                        <a href="javascript:window.history.back();">back</a>
+                                                                        <span>&dot;</span>
+                                                                        <a href="#">home</a>
+                                                                    </div>
+                                                                </section>
+                                                                
+                                                                                <!---->
+                                                                                <section class="post-nav">
+                                                                                    
+                                                                                        <a class="prev" rel="prev" href="https://zzggtt.github.io/39J-dBcvp/">
+                                                                                            《Django4.0源码学习》- 命令执行过程
+                                                                                        </a>
+                                                                                        
+                                                                                            
+                                                                                                <a class="next" rel="next" href="https://zzggtt.github.io/hello-gridea/">
+                                                                                                    Hello Gridea
+                                                                                                </a>
+                                                                                                
+                                                                                </section>
+                    </article>
+                </div>
+                
+                                            
+            </div>
+    </div>
+    </div>
+    </div>
+    
+        <footer id="footer" class="footer">
+            <div class="copyright">
+                
+                        Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+                            
+                                        <svg viewBox="0 0 1024 1024" style="margin-left: 5px;margin-right: 5px;" version="1.0" width="8" height="8" class="my-face">
+            <path
+                d="M863.597631 513.574282l-271.33965-140.213484L729.783667 81.926656c3.583731-7.87141 7.167462-15.742819 7.167462-25.214109C736.887134 25.226908 708.345275 0.012799 672.635953 0.012799a63.611229 63.611229 0 0 0-39.293053 12.607055c-1.791866 1.59988-3.519736 3.19976-5.311602 3.19976L147.87531 418.925381a55.547834 55.547834 0 0 0-19.646527 47.356448c1.791866 17.278704 14.27093 33.021523 32.125591 42.492813l271.33965 141.749369L292.504463 945.221908c-12.479064 25.214109-1.791866 53.563983 23.166262 69.306802 10.751194 6.335525 23.230258 9.47129 35.709322 9.47129 16.062795 0 32.125591-4.735645 44.604655-15.742819l480.091993-403.297753a55.547834 55.547834 0 0 0 19.646526-47.228458 61.243407 61.243407 0 0 0-32.12559-44.156688z"
+                fill="#93b5cf"></path>
+        </svg>
+                                        ZGGTT &copy;Copyright
+                                            <script>
+                                                var date = new Date();
+                                                document.write("" + date.getFullYear());
+                                            </script>
+                                            | Powered by
+                                            <a href="" target="_blank">
+                                                
+                                            </a>
+            </div>
+            <div id="update" style="display:none;">
+                on
+            </div>
+            
+                <div id="version" style="display:none;">
+                    1.7.5
+                </div>
+                
+                    <script>
+                        var pat = '';
+                        
+                        document.write('<div id="home_path" style="display:none;">' + document.location.protocol + '//' + window.document.location.hostname + pat + '</div>')
+                    </script>
+        </footer>
+        
+            <script src='https://cdn.jsdelivr.net/npm/live2d-widget@3.x/lib/L2Dwidget.min.js'></script>
+            
+                <script>
+                    
+                    
+                    loadlive2d();
+                    
+                    
+                    getStar();
+                    hljs.initHighlighting();
+                    console.clear();
+                    
+                    CheckVersion();
+                    
+                    var newDate = new Date();
+                    newDate.setTime(1674199567242);
+                    console.log(" Blog Update Time: " + newDate.toLocaleDateString());
+                    console.log("\n %c \u26a1Theme:Chic Author's Blog:https://blog.itjoker.cn  Write By ITJoker  \n\n", "color: #ffffff; background: rgba(49, 49, 49, 0.85); padding:5px 0;border-radius:5px;");
+                </script>
+                
+                    <div id="tp-weather-widget" style="background: #666;display: flex;"></div>
+                    <script>
+                        (function(T, h, i, n, k, P, a, g, e) {
+                            g = function() {
+                                P = h.createElement(i);
+                                a = h.getElementsByTagName(i)[0];
+                                P.src = k;
+                                P.charset = "utf-8";
+                                P.async = 1;
+                                a.parentNode.insertBefore(P, a)
+                            };
+                            T["ThinkPageWeatherWidgetObject"] = n;
+                            T[n] || (T[n] = function() {
+                                (T[n].q = T[n].q || []).push(arguments)
+                            });
+                            T[n].l = +new Date();
+                            if (T.attachEvent) {
+                                T.attachEvent("onload", g)
+                            } else {
+                                T.addEventListener("load", g, false)
+                            }
+                        }(window, document, "script", "tpwidget", "//widget.seniverse.com/widget/chameleon.js"))
+                    </script>
+                    <script>
+                        var wearther_margin = "10px 10px";
+                        
+                        tpwidget("init", {
+                            "flavor": "bubble",
+                            "location": "WX4FBXXFKE4F",
+                            "geolocation": "enabled",
+                            "position": "bottom-left",
+                            "margin": wearther_margin,
+                            "language": "zh-chs",
+                            "unit": "c",
+                            "theme": "chameleon",
+                            "uid": "UFC977E1C7",
+                            "hash": "213ad798bc472dc365da3a9d4a9ff115"
+                        });
+                        tpwidget("show");
+                    </script>
+                    
+        </div>
+</body>
+<script>
+    scroll();
+</script>
+
+</html>
